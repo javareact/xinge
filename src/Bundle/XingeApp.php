@@ -1,16 +1,7 @@
 <?php
 
+namespace Javareact\Xinge\Bundle;
 
-namespace Javareact\Auth\Bundle;
-
-
-use Javareact\Xinge\Bundle\ClickAction;
-use Javareact\Xinge\Bundle\Message;
-use Javareact\Xinge\Bundle\MessageIOS;
-use Javareact\Xinge\Bundle\ParamsBase;
-use Javareact\Xinge\Bundle\RequestBase;
-use Javareact\Xinge\Bundle\Style;
-use Javareact\Xinge\Bundle\TagTokenPair;
 use Javareact\Xinge\Exceptions\InvalidArgumentException;
 
 class XingeApp

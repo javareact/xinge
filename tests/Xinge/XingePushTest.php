@@ -3,7 +3,7 @@
 namespace Xinge\Tests\Xinge;
 
 use PHPUnit\Framework\TestCase;
-use Javareact\Auth\Bundle\XingeApp;
+use Javareact\Xinge\Bundle\XingeApp;
 use Javareact\Xinge\Bundle\ClickAction;
 use Javareact\Xinge\Bundle\Message;
 use Javareact\Xinge\Bundle\MessageIOS;
@@ -20,7 +20,6 @@ class XingePushTest extends TestCase
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        include_once __DIR__ . '/../../vendor/autoload.php';
     }
 
     /**

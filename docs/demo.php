@@ -1,6 +1,6 @@
 <?php
 
-use Javareact\Auth\Bundle\XingeApp;
+use Javareact\Xinge\Bundle\XingeApp;
 use Javareact\Xinge\Bundle\ClickAction;
 use Javareact\Xinge\Bundle\Message;
 use Javareact\Xinge\Bundle\MessageIOS;
