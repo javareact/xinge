@@ -25,6 +25,7 @@ class XingePushTest extends TestCase
     /**
      * 单个设备下发通知消息
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushSingleDeviceNotification()
     {
@@ -49,12 +50,13 @@ class XingePushTest extends TestCase
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
         $ret = $push->PushSingleDevice('token', $mess);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 单个设备下发透传消息       注：透传消息默认不展示
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushSingleDeviceMessage()
     {
@@ -66,12 +68,13 @@ class XingePushTest extends TestCase
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $mess->setType(Message::TYPE_MESSAGE);
         $ret = $push->PushSingleDevice('token', $mess);
-        return $ret;
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发IOS设备消息
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushSingleDeviceIOS()
     {
@@ -92,12 +95,13 @@ class XingePushTest extends TestCase
         // $raw = '{"xg_max_payload":1,"accept_time":[{"start":{"hour":"20","min":"0"},"end":{"hour":"23","min":"59"}}],"aps":{"alert":"="}}';
         // $mess->setRaw($raw);
         $ret = $push->PushSingleDevice('token', $mess, XingeApp::IOSENV_DEV);
-        return $ret;
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发单个账号
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushSingleAccount()
     {
@@ -109,12 +113,13 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $ret = $push->PushSingleAccount('joelliu', $mess);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发多个账号， IOS下发多个账号参考DemoPushSingleAccountIOS进行相应修改
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushAccountList()
     {
@@ -127,12 +132,13 @@ class XingePushTest extends TestCase
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $accountList = array('joelliu', 'hoepeng');
         $ret         = $push->PushAccountList($accountList, $mess);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发IOS账号消息
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushSingleAccountIOS()
     {
@@ -151,12 +157,13 @@ class XingePushTest extends TestCase
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
         $ret = $push->PushSingleAccount('joelliu', $mess, XingeApp::IOSENV_DEV);
-        return $ret;
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发所有设备
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushAllDevices()
     {
@@ -179,12 +186,13 @@ class XingePushTest extends TestCase
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
         $ret = $push->PushAllDevices($mess);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
      * 下发标签选中设备
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function testDemoPushTags()
     {
@@ -197,7 +205,7 @@ class XingePushTest extends TestCase
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $tagList = array('Demo3', 'Demo2');
         $ret     = $push->PushTags($tagList, 'OR', $mess);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -209,7 +217,7 @@ class XingePushTest extends TestCase
         $push       = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $pushIdList = array('31', '32');
         $ret        = $push->QueryPushStatus($pushIdList);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -220,7 +228,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryDeviceCount();
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -232,7 +240,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryTags(0, 100);
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -243,7 +251,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryTagTokenNum("tag");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -255,7 +263,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryTokenTags("token");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -266,7 +274,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->CancelTimingPush("32");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -282,7 +290,7 @@ class XingePushTest extends TestCase
 
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->BatchSetTag($pairs);
-        return $ret;
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -298,7 +306,7 @@ class XingePushTest extends TestCase
 
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->BatchDelTag($pairs);
-        return $ret;
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -309,7 +317,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryInfoOfToken("token");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -320,7 +328,7 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->QueryTokensOfAccount("nickName");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 
     /**
@@ -331,6 +339,6 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
         $ret  = $push->DeleteAllTokensOfAccount("nickName");
-        return ($ret);
+        $this->assertNotEmpty($ret);
     }
 }
