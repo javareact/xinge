@@ -4,12 +4,10 @@
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
-        stopOnFailure="false"
-        syntaxCheck="true"
-        bootstrap="tests/bootstrap.php">
+        stopOnFailure="false">
     <testsuites>
         <testsuite name="Xinge PHP SDK Test Suite">
-            <directory>tests/Xinge</directory>
+            <directory>./tests/Xinge/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

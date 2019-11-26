@@ -17,11 +17,10 @@ class XingePushTest extends TestCase
     public $secretKey = 'secretKey';
     public $accessId  = 'accessId';
 
-    public function __construct($appId, $secretKey, $accessId)
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        $this->appId     = $appId;
-        $this->secretKey = $secretKey;
-        $this->accessId  = $accessId;
+        parent::__construct($name, $data, $dataName);
+        include_once __DIR__ . '/../../vendor/autoload.php';
     }
 
     /**
