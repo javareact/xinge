@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        stopOnFailure="false"
+        syntaxCheck="true"
+        bootstrap="tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="Xinge PHP SDK Test Suite">
+            <directory>tests/Xinge</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

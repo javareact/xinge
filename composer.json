@@ -1,0 +1,33 @@
+{
+  "name": "javareact/xinge",
+  "type": "library",
+  "description": "Xinge API PHP Client",
+  "homepage": "https://github.com/javareact/xinge",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.0",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Javareact\\Xinge\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Xinge\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
