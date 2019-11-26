@@ -102,6 +102,9 @@ class ClickAction
         return $ret;
     }
 
+    /**
+     * @return bool
+     */
     public function isValid()
     {
         if (!isset($this->m_actionType)) {
@@ -158,6 +161,4 @@ class ClickAction
             return false;
         }
     }
-
-
 }

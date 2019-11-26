@@ -26,6 +26,9 @@ class MessageIOS
     const TYPE_REMOTE_NOTIFICATION = 'message';
     const MAX_LOOP_TASK_DAYS       = 15;
 
+    /**
+     * MessageIOS constructor.
+     */
     public function __construct()
     {
         $this->m_acceptTimes = array();

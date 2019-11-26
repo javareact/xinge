@@ -11,6 +11,7 @@ use Javareact\Xinge\Bundle\ParamsBase;
 use Javareact\Xinge\Bundle\RequestBase;
 use Javareact\Xinge\Bundle\Style;
 use Javareact\Xinge\Bundle\TagTokenPair;
+use Javareact\Xinge\Exceptions\InvalidArgumentException;
 
 class XingeApp
 {
@@ -27,9 +28,23 @@ class XingeApp
 
     const IOS_MIN_ID = 2200000000;
 
-    public $appId     = ''; //应用的接入Id
-    public $secretKey = ''; //应用的skey
-    public $accessId  = ''; //应用的skey
+    /**
+     * 应用的接入Id
+     * @var string
+     */
+    private $appId = '';
+
+    /**
+     * 应用的skey
+     * @var string
+     */
+    private $secretKey = '';
+
+    /**
+     * 应用的skey
+     * @var string
+     */
+    private $accessId = '';
 
     const RESTAPI_QUERYPUSHSTATUS          = 'http://openapi.xg.qq.com/v2/push/get_msg_status';
     const RESTAPI_QUERYDEVICECOUNT         = 'http://openapi.xg.qq.com/v2/application/get_app_device_num';
@@ -44,7 +59,9 @@ class XingeApp
     const RESTAPI_DELETETOKENOFACCOUNT     = 'http://openapi.xg.qq.com/v2/application/del_app_account_tokens';
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens';
 
-    // v3 接口
+    /**
+     * v3 接口
+     */
     const RESTAPI_PUSH = 'https://openapi.xg.qq.com/v3/push/app';
 
     /**
@@ -55,18 +72,30 @@ class XingeApp
      */
     public function __construct($appId, $secretKey, $accessId = '')
     {
-        assert(isset($appId) && isset($secretKey));
+        if (empty($appId) || empty($secretKey)) {
+            throw new InvalidArgumentException();
+        }
         $this->appId     = $appId;
         $this->secretKey = $secretKey;
         $this->accessId  = $accessId;
     }
 
+    /**
+     *
+     */
     public function __destruct()
     {
     }
 
     /**
      * 使用默认设置推送消息给单个android设备
+     * @param $appId
+     * @param $secretKey
+     * @param $title
+     * @param $content
+     * @param $token
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushTokenAndroid($appId, $secretKey, $title, $content, $token)
     {
@@ -85,6 +114,13 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给单个ios设备
+     * @param $appId
+     * @param $secretKey
+     * @param $content
+     * @param $token
+     * @param $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushTokenIos($appId, $secretKey, $content, $token, $environment)
     {
@@ -97,6 +133,13 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给单个android版账户
+     * @param $appId
+     * @param $secretKey
+     * @param $title
+     * @param $content
+     * @param $account
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushAccountAndroid($appId, $secretKey, $title, $content, $account)
     {
@@ -115,18 +158,31 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给单个ios版账户
+     * @param $appId
+     * @param $secretKey
+     * @param $content
+     * @param $account
+     * @param $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushAccountIos($appId, $secretKey, $content, $account, $environment)
     {
         $push = new XingeApp($appId, $secretKey);
         $mess = new MessageIOS();
         $mess->setAlert($content);
-        $ret = $push->PushSingleAccount(0, $account, $mess, $environment);
+        $ret = $push->PushSingleAccount($account, $mess, $environment);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给所有设备android版
+     * @param $appId
+     * @param $secretKey
+     * @param $title
+     * @param $content
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushAllAndroid($appId, $secretKey, $title, $content)
     {
@@ -145,6 +201,11 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给所有设备ios版
+     * @param $appId
+     * @param $secretKey
+     * @param $content
+     * @param $environment
+     * @return array|mixed
      */
     public static function PushAllIos($appId, $secretKey, $content, $environment)
     {
@@ -157,6 +218,13 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给标签选中设备android版
+     * @param $appId
+     * @param $secretKey
+     * @param $title
+     * @param $content
+     * @param $tag
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushTagAndroid($appId, $secretKey, $title, $content, $tag)
     {
@@ -175,6 +243,13 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给标签选中设备ios版
+     * @param $appId
+     * @param $secretKey
+     * @param $content
+     * @param $tag
+     * @param $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public static function PushTagIos($appId, $secretKey, $content, $tag, $environment)
     {
@@ -187,15 +262,18 @@ class XingeApp
 
     /**
      * 推送消息给单个设备
+     * @param $deviceToken
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function PushSingleDevice($deviceToken, $message, $environment = XingeApp::IOSENV_DEV)
     {
         $ret = array('ret_code' => -1, 'err_msg' => 'message not valid');
-
         if (!($message instanceof Message) && !($message instanceof MessageIOS)) {
             return $ret;
         }
-
         if ($message instanceof MessageIOS) {
             if ($environment != XingeApp::IOSENV_DEV && $environment != XingeApp::IOSENV_PROD) {
                 $ret['err_msg'] = "ios message environment invalid";
@@ -227,6 +305,11 @@ class XingeApp
 
     /**
      * 推送消息给单个账户
+     * @param $account
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function PushSingleAccount($account, $message, $environment = XingeApp::IOSENV_DEV)
     {
@@ -268,6 +351,11 @@ class XingeApp
 
     /**
      * 推送消息给多个账户
+     * @param $tokenList
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function PushTokenList($tokenList, $message, $environment = XingeApp::IOSENV_DEV)
     {
@@ -309,6 +397,11 @@ class XingeApp
 
     /**
      * 推送消息给多个账户
+     * @param $accountList
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function PushAccountList($accountList, $message, $environment = XingeApp::IOSENV_DEV)
     {
@@ -350,6 +443,10 @@ class XingeApp
 
     /**
      * 推送消息给APP所有设备
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function PushAllDevices($message, $environment = XingeApp::IOSENV_DEV)
     {
@@ -395,6 +492,12 @@ class XingeApp
     /**
      * 推送消息给指定tags的设备
      * 若要推送的tagList只有一项，则tagsOp应为OR
+     * @param $tagList
+     * @param $tagsOp
+     * @param $message
+     * @param string $environment
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     public function pushTags($tagList, $tagsOp, $message, $environment = XingeApp::IOSENV_DEV)
     {
@@ -453,6 +556,7 @@ class XingeApp
     /**
      * 查询消息推送状态
      * @param array $pushIdList pushId(string)数组
+     * @return array|mixed
      */
     public function QueryPushStatus($pushIdList)
     {
@@ -487,6 +591,9 @@ class XingeApp
 
     /**
      * 查询应用标签
+     * @param int $start
+     * @param int $limit
+     * @return array|mixed
      */
     public function QueryTags($start = 0, $limit = 100)
     {
@@ -506,6 +613,8 @@ class XingeApp
 
     /**
      * 查询标签下token数量
+     * @param $tag
+     * @return array|mixed
      */
     public function QueryTagTokenNum($tag)
     {
@@ -524,6 +633,8 @@ class XingeApp
 
     /**
      * 查询token的标签
+     * @param $deviceToken
+     * @return array|mixed
      */
     public function QueryTokenTags($deviceToken)
     {
@@ -542,6 +653,8 @@ class XingeApp
 
     /**
      * 取消定时发送
+     * @param $pushId
+     * @return array|mixed
      */
     public function CancelTimingPush($pushId)
     {
@@ -558,13 +671,23 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_CANCELTIMINGPUSH, $params);
     }
 
-    //json转换为数组
+    /**
+     * json转换为数组
+     * @param $json
+     * @return mixed
+     */
     protected function json2Array($json)
     {
         $json = stripslashes($json);
         return json_decode($json, true);
     }
 
+    /**
+     * @param $url
+     * @param $params
+     * @return mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
+     */
     protected function callRestful($url, $params)
     {
         $paramsBase      = new ParamsBase($params);
@@ -584,6 +707,11 @@ class XingeApp
         return $ret;
     }
 
+    /**
+     * @param $url
+     * @param $params
+     * @return mixed
+     */
     protected function callRestfulForOld($url, $params)
     {
         $paramsBase     = new ParamsBase($params);
@@ -599,6 +727,10 @@ class XingeApp
         return $ret;
     }
 
+    /**
+     * @param $token
+     * @return bool
+     */
     private function ValidateToken($token)
     {
         if ($this->accessId >= 2200000000) {
@@ -608,6 +740,9 @@ class XingeApp
         }
     }
 
+    /**
+     * @return array
+     */
     public function InitParams()
     {
 
@@ -618,6 +753,10 @@ class XingeApp
         return $params;
     }
 
+    /**
+     * @param $tagTokenPairs
+     * @return array|mixed
+     */
     public function BatchSetTag($tagTokenPairs)
     {
         $ret = array('ret_code' => -1);
@@ -643,6 +782,10 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_BATCHSETTAG, $params);
     }
 
+    /**
+     * @param $tagTokenPairs
+     * @return array|mixed
+     */
     public function BatchDelTag($tagTokenPairs)
     {
         $ret = array('ret_code' => -1);
@@ -668,6 +811,10 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_BATCHDELTAG, $params);
     }
 
+    /**
+     * @param $deviceToken
+     * @return array|mixed
+     */
     public function QueryInfoOfToken($deviceToken)
     {
         $ret = array('ret_code' => -1);
@@ -683,6 +830,10 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_QUERYINFOOFTOKEN, $params);
     }
 
+    /**
+     * @param $account
+     * @return array|mixed
+     */
     public function QueryTokensOfAccount($account)
     {
         $ret = array('ret_code' => -1);
@@ -698,6 +849,11 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_QUERYTOKENSOFACCOUNT, $params);
     }
 
+    /**
+     * @param $account
+     * @param $deviceToken
+     * @return array|mixed
+     */
     public function DeleteTokenOfAccount($account, $deviceToken)
     {
         $ret = array('ret_code' => -1);
@@ -714,6 +870,10 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_DELETETOKENOFACCOUNT, $params);
     }
 
+    /**
+     * @param $account
+     * @return array|mixed
+     */
     public function DeleteAllTokensOfAccount($account)
     {
         $ret = array('ret_code' => -1);

@@ -24,6 +24,9 @@ class Message
     const TYPE_MESSAGE       = 'message';
     const MAX_LOOP_TASK_DAYS = 15;
 
+    /**
+     * Message constructor.
+     */
     public function __construct()
     {
         $this->m_acceptTimes = array();

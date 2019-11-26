@@ -11,6 +11,13 @@ class TimeInterval
     private $m_endHour;
     private $m_endMin;
 
+    /**
+     * TimeInterval constructor.
+     * @param $startHour
+     * @param $startMin
+     * @param $endHour
+     * @param $endMin
+     */
     public function __construct($startHour, $startMin, $endHour, $endMin)
     {
         $this->m_startHour = $startHour;

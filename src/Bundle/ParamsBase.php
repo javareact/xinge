@@ -26,6 +26,10 @@ class ParamsBase
         }
     }
 
+    /**
+     * @param $k
+     * @param $v
+     */
     public function set($k, $v)
     {
         if (!isset($k) || !isset($v)) {
