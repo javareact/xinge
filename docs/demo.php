@@ -43,7 +43,10 @@ class Demo
         $mess->setCustom($custom);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushSingleDevice('token', $mess);
+        try {
+            $ret = $push->PushSingleDevice('token', $mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return ($ret);
     }
 
@@ -60,7 +63,10 @@ class Demo
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $mess->setType(Message::TYPE_MESSAGE);
-        $ret = $push->PushSingleDevice('token', $mess);
+        try {
+            $ret = $push->PushSingleDevice('token', $mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return $ret;
     }
 
@@ -86,7 +92,10 @@ class Demo
         $mess->addAcceptTime($acceptTime);
         // $raw = '{"xg_max_payload":1,"accept_time":[{"start":{"hour":"20","min":"0"},"end":{"hour":"23","min":"59"}}],"aps":{"alert":"="}}';
         // $mess->setRaw($raw);
-        $ret = $push->PushSingleDevice('token', $mess, XingeApp::IOSENV_DEV);
+        try {
+            $ret = $push->PushSingleDevice('token', $mess, XingeApp::IOSENV_DEV);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return $ret;
     }
 
@@ -103,7 +112,10 @@ class Demo
         $mess->setContent("中午");
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
-        $ret = $push->PushSingleAccount('joelliu', $mess);
+        try {
+            $ret = $push->PushSingleAccount('joelliu', $mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return ($ret);
     }
 
@@ -121,7 +133,10 @@ class Demo
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $accountList = array('joelliu', 'hoepeng');
-        $ret         = $push->PushAccountList($accountList, $mess);
+        try {
+            $ret = $push->PushAccountList($accountList, $mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return ($ret);
     }
 
@@ -145,7 +160,10 @@ class Demo
         $mess->setCustom($custom);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushSingleAccount('joelliu', $mess, XingeApp::IOSENV_DEV);
+        try {
+            $ret = $push->PushSingleAccount('joelliu', $mess, XingeApp::IOSENV_DEV);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return $ret;
     }
 
@@ -173,7 +191,10 @@ class Demo
         $mess->setAction($action);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushAllDevices($mess);
+        try {
+            $ret = $push->PushAllDevices($mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return ($ret);
     }
 
@@ -191,7 +212,10 @@ class Demo
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $tagList = array('Demo3', 'Demo2');
-        $ret     = $push->PushTags($tagList, 'OR', $mess);
+        try {
+            $ret = $push->PushTags($tagList, 'OR', $mess);
+        } catch (\Javareact\Xinge\Exceptions\Exception $e) {
+        }
         return ($ret);
     }
 

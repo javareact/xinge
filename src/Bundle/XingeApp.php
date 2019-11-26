@@ -81,7 +81,7 @@ class XingeApp
     }
 
     /**
-     *
+     * 析构函数
      */
     public function __destruct()
     {
@@ -89,17 +89,14 @@ class XingeApp
 
     /**
      * 使用默认设置推送消息给单个android设备
-     * @param $appId
-     * @param $secretKey
      * @param $title
      * @param $content
      * @param $token
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushTokenAndroid($appId, $secretKey, $title, $content, $token)
+    public function PushTokenAndroid($title, $content, $token)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new Message();
         $mess->setTitle($title);
         $mess->setContent($content);
@@ -108,42 +105,36 @@ class XingeApp
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_ACTIVITY);
         $mess->setAction($action);
-        $ret = $push->PushSingleDevice($token, $mess);
+        $ret = $this->PushSingleDevice($token, $mess);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给单个ios设备
-     * @param $appId
-     * @param $secretKey
      * @param $content
      * @param $token
      * @param $environment
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushTokenIos($appId, $secretKey, $content, $token, $environment)
+    public function PushTokenIos($content, $token, $environment)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new MessageIOS();
         $mess->setAlert($content);
-        $ret = $push->PushSingleDevice($token, $mess, $environment);
+        $ret = $this->PushSingleDevice($token, $mess, $environment);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给单个android版账户
-     * @param $appId
-     * @param $secretKey
      * @param $title
      * @param $content
      * @param $account
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushAccountAndroid($appId, $secretKey, $title, $content, $account)
+    public function PushAccountAndroid($title, $content, $account)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new Message();
         $mess->setTitle($title);
         $mess->setContent($content);
@@ -152,41 +143,35 @@ class XingeApp
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_ACTIVITY);
         $mess->setAction($action);
-        $ret = $push->PushSingleAccount(0, $account, $mess);
+        $ret = $this->PushSingleAccount(0, $account, $mess);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给单个ios版账户
-     * @param $appId
-     * @param $secretKey
      * @param $content
      * @param $account
      * @param $environment
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushAccountIos($appId, $secretKey, $content, $account, $environment)
+    public function PushAccountIos($content, $account, $environment)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new MessageIOS();
         $mess->setAlert($content);
-        $ret = $push->PushSingleAccount($account, $mess, $environment);
+        $ret = $this->PushSingleAccount($account, $mess, $environment);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给所有设备android版
-     * @param $appId
-     * @param $secretKey
      * @param $title
      * @param $content
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushAllAndroid($appId, $secretKey, $title, $content)
+    public function PushAllAndroid($title, $content)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new Message();
         $mess->setTitle($title);
         $mess->setContent($content);
@@ -195,40 +180,35 @@ class XingeApp
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_ACTIVITY);
         $mess->setAction($action);
-        $ret = $push->PushAllDevices($mess);
+        $ret = $this->PushAllDevices($mess);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给所有设备ios版
-     * @param $appId
-     * @param $secretKey
      * @param $content
      * @param $environment
      * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushAllIos($appId, $secretKey, $content, $environment)
+    public function PushAllIos($content, $environment)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new MessageIOS();
         $mess->setAlert($content);
-        $ret = $push->PushAllDevices($mess, $environment);
+        $ret = $this->PushAllDevices($mess, $environment);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给标签选中设备android版
-     * @param $appId
-     * @param $secretKey
      * @param $title
      * @param $content
      * @param $tag
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushTagAndroid($appId, $secretKey, $title, $content, $tag)
+    public function PushTagAndroid($title, $content, $tag)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new Message();
         $mess->setTitle($title);
         $mess->setContent($content);
@@ -237,26 +217,23 @@ class XingeApp
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_ACTIVITY);
         $mess->setAction($action);
-        $ret = $push->PushTags(array($tag), 'OR', $mess);
+        $ret = $this->PushTags(array($tag), 'OR', $mess);
         return $ret;
     }
 
     /**
      * 使用默认设置推送消息给标签选中设备ios版
-     * @param $appId
-     * @param $secretKey
      * @param $content
      * @param $tag
      * @param $environment
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
      */
-    public static function PushTagIos($appId, $secretKey, $content, $tag, $environment)
+    public function PushTagIos($content, $tag, $environment)
     {
-        $push = new XingeApp($appId, $secretKey);
         $mess = new MessageIOS();
         $mess->setAlert($content);
-        $ret = $push->PushTags(array($tag), 'OR', $mess, $environment);
+        $ret = $this->PushTags(array($tag), 'OR', $mess, $environment);
         return $ret;
     }
 
