@@ -40,17 +40,62 @@ class XingeApp
     /******************************
      *           V2可用           *
      *****************************/
-    const RESTAPI_QUERYPUSHSTATUS          = 'http://openapi.xg.qq.com/v2/push/get_msg_status';
-    const RESTAPI_QUERYDEVICECOUNT         = 'http://openapi.xg.qq.com/v2/application/get_app_device_num';
-    const RESTAPI_QUERYTAGS                = 'http://openapi.xg.qq.com/v2/tags/query_app_tags';
-    const RESTAPI_CANCELTIMINGPUSH         = 'http://openapi.xg.qq.com/v2/push/cancel_timing_task';
-    const RESTAPI_BATCHSETTAG              = 'http://openapi.xg.qq.com/v2/tags/batch_set';
-    const RESTAPI_BATCHDELTAG              = 'http://openapi.xg.qq.com/v2/tags/batch_del';
-    const RESTAPI_QUERYTOKENTAGS           = 'http://openapi.xg.qq.com/v2/tags/query_token_tags';
-    const RESTAPI_QUERYTAGTOKENNUM         = 'http://openapi.xg.qq.com/v2/tags/query_tag_token_num';
-    const RESTAPI_QUERYINFOOFTOKEN         = 'http://openapi.xg.qq.com/v2/application/get_app_token_info';
-    const RESTAPI_QUERYTOKENSOFACCOUNT     = 'http://openapi.xg.qq.com/v2/application/get_app_account_tokens';
-    const RESTAPI_DELETETOKENOFACCOUNT     = 'http://openapi.xg.qq.com/v2/application/del_app_account_tokens';
+    /**
+     *  查询消息状态
+     */
+    const RESTAPI_QUERYPUSHSTATUS = 'http://openapi.xg.qq.com/v2/push/get_msg_status';
+    /**
+     * 查询应用覆盖的设备Token总数
+     */
+    const RESTAPI_QUERYDEVICECOUNT = 'http://openapi.xg.qq.com/v2/application/get_app_device_num';
+
+    /**
+     * 查询全部标签
+     */
+    const RESTAPI_QUERYTAGS = 'http://openapi.xg.qq.com/v2/tags/query_app_tags';
+    /**
+     * 取消推送
+     */
+    const RESTAPI_CANCELTIMINGPUSH = 'http://openapi.xg.qq.com/v2/push/cancel_timing_task';
+
+    /**
+     * 批量新增标签
+     */
+    const RESTAPI_BATCHSETTAG = 'http://openapi.xg.qq.com/v2/tags/batch_set';
+
+    /**
+     * 批量删除标签
+     */
+    const RESTAPI_BATCHDELTAG = 'http://openapi.xg.qq.com/v2/tags/batch_del';
+
+    /**
+     * 查询单个指定设备的标签
+     */
+    const RESTAPI_QUERYTOKENTAGS = 'http://openapi.xg.qq.com/v2/tags/query_token_tags';
+
+    /**
+     * 查询单个指定标签的Token总数
+     */
+    const RESTAPI_QUERYTAGTOKENNUM = 'http://openapi.xg.qq.com/v2/tags/query_tag_token_num';
+
+    /**
+     * 查询指定设备Token的注册状态
+     */
+    const RESTAPI_QUERYINFOOFTOKEN = 'http://openapi.xg.qq.com/v2/application/get_app_token_info';
+
+    /**
+     * 查询单个账号关联的设备
+     */
+    const RESTAPI_QUERYTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/get_app_account_tokens';
+
+    /**
+     * 删除单个账号关联的单个设备Token
+     */
+    const RESTAPI_DELETETOKENOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_tokens';
+
+    /**
+     * 删除单个账号关联的全部设备Token
+     */
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens';
 
     /******************************
@@ -736,6 +781,7 @@ class XingeApp
     }
 
     /**
+     * 批量新增标签
      * @param $tagTokenPairs
      * @return array|mixed
      */
@@ -765,6 +811,7 @@ class XingeApp
     }
 
     /**
+     * 批量删除标签
      * @param $tagTokenPairs
      * @return array|mixed
      */
@@ -794,6 +841,7 @@ class XingeApp
     }
 
     /**
+     * 查询指定设备Token的注册状态
      * @param $deviceToken
      * @return array|mixed
      */
@@ -813,6 +861,7 @@ class XingeApp
     }
 
     /**
+     * 查询单个账号关联的设备
      * @param $account
      * @return array|mixed
      */
@@ -832,6 +881,7 @@ class XingeApp
     }
 
     /**
+     * 删除单个账号关联的单个设备Token
      * @param $account
      * @param $deviceToken
      * @return array|mixed
@@ -853,6 +903,7 @@ class XingeApp
     }
 
     /**
+     * 删除单个账号关联的全部设备Token
      * @param $account
      * @return array|mixed
      */
@@ -872,30 +923,58 @@ class XingeApp
     }
 
     /**
-     * Token追加设置Account todo
+     * Token追加设置Account
      */
+    public function AppendAccountByToken()
+    {
+        // todo
+    }
 
     /**
      * Token覆盖绑定Account todo
      */
+    public function OverrideAccountByToken()
+    {
+        // todo
+    }
 
     /**
-     * Token删除绑定Account todo
+     * Token删除绑定Account
      */
+    public function DelAccountByToken()
+    {
+        // todo
+    }
 
     /**
      * Token删除所有绑定Account todo
      */
+    public function DelAllAccountByToken()
+    {
+        // todo
+    }
 
     /**
-     * Account删除所有绑定Token todo
+     * Account删除所有绑定Token
      */
+    public function DelTokenByAccount()
+    {
+        // todo
+    }
 
     /**
-     * 根据account批量查询对应token todo
+     * 根据account批量查询对应token
      */
+    public function QueryTokenByAccount()
+    {
+        // todo
+    }
 
     /**
-     * 根据token查询account todo
+     * 根据token查询account
      */
+    public function QueryAccountByToken()
+    {
+        // todo
+    }
 }
