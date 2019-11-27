@@ -2,6 +2,7 @@
 
 namespace Javareact\Xinge\Bundle;
 
+use Javareact\Xinge\Exceptions\Exception;
 use Javareact\Xinge\Exceptions\InvalidArgumentException;
 
 class XingeApp
@@ -710,31 +711,36 @@ class XingeApp
     }
 
     /**
+     * 请求新版接口V3
      * @param $url
      * @param $params
      * @return mixed
-     * @throws \Javareact\Xinge\Exceptions\Exception
      */
     protected function callRestful($url, $params)
     {
-        $paramsBase      = new ParamsBase($params);
+        //$paramsBase      = new ParamsBase($params);
         $extra_curl_conf = array(
             CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD  => $this->appId . ':' . $this->secretKey,
+            CURLOPT_USERPWD  => $this->appId . ':' . $this->secretKey,//V3采用基础鉴权的方式
         );
-
-        $requestBase = new RequestBase();
-        $ret         = $this->json2Array($requestBase->exec(
-            $url,
-            $params,
-            RequestBase::METHOD_POST,
-            $extra_curl_conf
-        ));
-
+        $requestBase     = new RequestBase();
+        try {
+            $response = $requestBase->exec(
+                $url,
+                $params,
+                RequestBase::METHOD_POST,
+                $extra_curl_conf
+            );
+        } catch (Exception $e) {
+            //todo 记录日志
+            return null;
+        }
+        $ret = $this->json2Array($response);
         return $ret;
     }
 
     /**
+     * 请求旧版接口V2
      * @param $url
      * @param $params
      * @return mixed
@@ -745,12 +751,17 @@ class XingeApp
         $sign           = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->secretKey);
         $params['sign'] = $sign;
         $requestBase    = new RequestBase();
-        $ret            = $this->json2Array($requestBase->execForOld(
-            $url,
-            $params,
-            RequestBase::METHOD_POST
-        ));
-
+        try {
+            $response = $requestBase->execForOld(
+                $url,
+                $params,
+                RequestBase::METHOD_POST
+            );
+        } catch (Exception $e) {
+            //todo 记录日志
+            return null;
+        }
+        $ret = $this->json2Array($response);
         return $ret;
     }
 
