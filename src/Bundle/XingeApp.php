@@ -37,6 +37,9 @@ class XingeApp
      */
     private $accessId = '';
 
+    /******************************
+     *           V2可用           *
+     *****************************/
     const RESTAPI_QUERYPUSHSTATUS          = 'http://openapi.xg.qq.com/v2/push/get_msg_status';
     const RESTAPI_QUERYDEVICECOUNT         = 'http://openapi.xg.qq.com/v2/application/get_app_device_num';
     const RESTAPI_QUERYTAGS                = 'http://openapi.xg.qq.com/v2/tags/query_app_tags';
@@ -50,9 +53,20 @@ class XingeApp
     const RESTAPI_DELETETOKENOFACCOUNT     = 'http://openapi.xg.qq.com/v2/application/del_app_account_tokens';
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens';
 
+    /******************************
+     *           V3可用           *
+     *****************************/
+
     /**
-     * v3 接口
+     * 账号绑定与解绑（异步批量操作）
      */
+    const RESTAPI_ACCOUNT_BATCHOPERATE = 'https://openapi.xg.qq.com/v3/device/account/batchoperate';
+
+    /**
+     * 账号-设备绑定查询（实时批量操作）
+     */
+    const RESTAPI_ACCOUNT_QUERY = 'https://openapi.xg.qq.com/v3/device/account/query';
+
     const RESTAPI_PUSH = 'https://openapi.xg.qq.com/v3/push/app';
 
     /**
@@ -857,4 +871,31 @@ class XingeApp
         return $this->callRestfulForOld(self::RESTAPI_DELETEALLTOKENSOFACCOUNT, $params);
     }
 
+    /**
+     * Token追加设置Account todo
+     */
+
+    /**
+     * Token覆盖绑定Account todo
+     */
+
+    /**
+     * Token删除绑定Account todo
+     */
+
+    /**
+     * Token删除所有绑定Account todo
+     */
+
+    /**
+     * Account删除所有绑定Token todo
+     */
+
+    /**
+     * 根据account批量查询对应token todo
+     */
+
+    /**
+     * 根据token查询account todo
+     */
 }
