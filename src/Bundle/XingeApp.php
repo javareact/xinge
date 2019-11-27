@@ -935,10 +935,25 @@ class XingeApp
 
     /**
      * Token追加设置Account
+     * @param $token
+     * @param $account_list
+     * @param $platform
+     * @param int $account_type
+     * @return array|mixed
      */
-    public function AppendAccountByToken()
+    public function AppendAccountByToken($token, $account_list, $platform, $account_type = 0)
     {
-        // todo
+        $ret = array('ret_code' => -1);
+        if (empty($token_list) || empty($platform)) {
+            $ret['err_msg'] = 'token_list or platform is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 1;
+        $params['platform']      = $platform;
+        $mergeData               = [];//todo
+        $params['account_list']  = json_encode($token_list);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
     }
 
     /**
@@ -958,19 +973,52 @@ class XingeApp
     }
 
     /**
-     * Token删除所有绑定Account todo
+     * Token删除所有绑定Account
+     * @param $token_list
+     * @param $platform
+     * @param int $account_type
+     * @return array|mixed
      */
-    public function DelAllAccountByToken()
+    public function DelAllAccountByToken($token_list, $platform)
     {
-        // todo
+        $ret = array('ret_code' => -1);
+        if (empty($token_list) || empty($platform)) {
+            $ret['err_msg'] = 'token_list or platform is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 4;
+        $params['platform']      = $platform;
+        $params['account_list']  = json_encode($token_list);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
     }
 
     /**
      * Account删除所有绑定Token
+     * @param $account_list
+     * @param string $platform android|ios
+     * @param int $account_type
+     * @return array|mixed
      */
-    public function DelTokenByAccount()
+    public function DelTokenByAccount($account_list, $platform, $account_type = 0)
     {
-        // todo
+        $ret = array('ret_code' => -1);
+        if (empty($account_list) || empty($platform)) {
+            $ret['err_msg'] = 'account_list or platform is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 5;
+        $params['platform']      = $platform;
+        $mergeAccount            = [];
+        foreach ($account_list as $item) {
+            $mergeAccount[] = [
+                'account'      => $item,
+                'account_type' => $account_type,
+            ];
+        }
+        $params['account_list'] = json_encode($mergeAccount);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
     }
 
     /**
@@ -998,7 +1046,7 @@ class XingeApp
             ];
         }
         $params['account_list'] = json_encode($mergeAccount);
-        return $this->callRestfulForOld(self::RESTAPI_ACCOUNT_QUERY, $params);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
     }
 
     /**
@@ -1018,6 +1066,6 @@ class XingeApp
         $params['operator_type'] = 2;
         $params['platform']      = $platform;
         $params['token_list']    = json_encode($token_list);
-        return $this->callRestfulForOld(self::RESTAPI_ACCOUNT_QUERY, $params);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
     }
 }
