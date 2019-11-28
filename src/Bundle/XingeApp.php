@@ -113,6 +113,9 @@ class XingeApp
      */
     const RESTAPI_ACCOUNT_QUERY = 'https://openapi.xg.qq.com/v3/device/account/query';
 
+    /**
+     * 发送
+     */
     const RESTAPI_PUSH = 'https://openapi.xg.qq.com/v3/push/app';
 
     /**
@@ -929,7 +932,6 @@ class XingeApp
         $params['access_id'] = $this->accessId;
         $params['account']   = $account;
         $params['timestamp'] = time();
-
         return $this->callRestfulForOld(self::RESTAPI_DELETEALLTOKENSOFACCOUNT, $params);
     }
 
@@ -941,35 +943,104 @@ class XingeApp
      * @param int $account_type
      * @return array|mixed
      */
-    public function AppendAccountByToken($token, $account_list, $platform, $account_type = 0)
+    public function AppendAccountByToken(string $token, array $account_list, string $platform, int $account_type = 0)
     {
         $ret = array('ret_code' => -1);
-        if (empty($token_list) || empty($platform)) {
-            $ret['err_msg'] = 'token_list or platform is not valid';
+        if (empty($token) || empty($account_list) || empty($platform)) {
+            $ret['err_msg'] = 'token or account_list or platform is not valid';
             return $ret;
         }
         $params                  = array();
         $params['operator_type'] = 1;
         $params['platform']      = $platform;
-        $mergeData               = [];//todo
-        $params['account_list']  = json_encode($token_list);
-        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
+        $lists                   = [];
+        $account_lists           = [];
+        if ($account_list) {
+            foreach ($account_list as $item) {
+                $account_lists[] = [
+                    'account'      => $item,
+                    'account_type' => $account_type
+                ];
+            }
+        }
+        array_push($lists, [
+            'token'        => $token,
+            'account_list' => $account_lists
+        ]);
+        $params['token_accounts'] = json_encode($lists);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_BATCHOPERATE, $params);
     }
 
     /**
-     * Token覆盖绑定Account todo
+     * Token覆盖绑定Account
+     * @param $token
+     * @param $account_list
+     * @param $platform
+     * @param int $account_type
+     * @return array|mixed
      */
-    public function OverrideAccountByToken()
+    public function OverrideAccountByToken(string $token, array $account_list, string $platform, int $account_type = 0)
     {
-        // todo
+        $ret = array('ret_code' => -1);
+        if (empty($token) || empty($account_list) || empty($platform)) {
+            $ret['err_msg'] = 'token or account_list or platform is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 2;
+        $params['platform']      = $platform;
+        $lists                   = [];
+        $account_lists           = [];
+        if ($account_list) {
+            foreach ($account_list as $item) {
+                $account_lists[] = [
+                    'account'      => $item,
+                    'account_type' => $account_type
+                ];
+            }
+        }
+        array_push($lists, [
+            'token'        => $token,
+            'account_list' => $account_lists
+        ]);
+        $params['token_accounts'] = json_encode($lists);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_BATCHOPERATE, $params);
     }
 
     /**
      * Token删除绑定Account
+     * @param string $token
+     * @param array $account_list 账号列表
+     * @param string $platform
+     * @param int $account_type
+     * @return array|mixed
      */
-    public function DelAccountByToken()
+    public function DelAccountByToken(string $token, array $account_list, string $platform, int $account_type = 0)
     {
-        // todo
+        $ret = array('ret_code' => -1);
+        if (empty($token) || empty($account_list) || empty($platform)) {
+            $ret['err_msg'] = 'token or account_list or platform is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 3;
+        $params['platform']      = $platform;
+        $lists                   = [];
+        $account_lists           = [];
+        if ($account_list) {
+            foreach ($account_list as $item) {
+                $account_lists[] = [
+                    'account'      => $item,
+                    'account_type' => $account_type
+                ];
+            }
+        }
+        array_push($lists, [
+            'token'        => $token,
+            'account_list' => $account_lists
+        ]);
+        $params['token_accounts'] = json_encode($lists);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_BATCHOPERATE, $params);
     }
 
     /**
@@ -990,7 +1061,7 @@ class XingeApp
         $params['operator_type'] = 4;
         $params['platform']      = $platform;
         $params['account_list']  = json_encode($token_list);
-        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_BATCHOPERATE, $params);
     }
 
     /**
@@ -1018,7 +1089,7 @@ class XingeApp
             ];
         }
         $params['account_list'] = json_encode($mergeAccount);
-        return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
+        return $this->callRestful(self::RESTAPI_ACCOUNT_BATCHOPERATE, $params);
     }
 
     /**
