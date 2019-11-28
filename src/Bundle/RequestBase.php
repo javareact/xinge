@@ -68,10 +68,11 @@ class RequestBase
         //设置curl的配置项
         curl_setopt_array($curl_handle, $curl_conf);
         //发起请求
-        $data = curl_exec($curl_handle);
+        $data       = curl_exec($curl_handle);
+        $curl_error = curl_error($curl_handle);
         curl_close($curl_handle);
         if ($data === false) {
-            throw new Exception('CURL ERROR: ' . curl_error($curl_handle));
+            throw new Exception('CURL ERROR: ' . $curl_error);
         }
         return $data;
     }
@@ -107,7 +108,6 @@ class RequestBase
             //post参数
             $curl_conf[CURLOPT_POSTFIELDS] = $params;
         }
-
         //添加额外的配置
         foreach ($extra_conf as $k => $v) {
             $curl_conf[$k] = $v;
@@ -117,10 +117,11 @@ class RequestBase
         //设置curl的配置项
         curl_setopt_array($curl_handle, $curl_conf);
         //发起请求
-        $data = curl_exec($curl_handle);
+        $data       = curl_exec($curl_handle);
+        $curl_error = curl_error($curl_handle);
         curl_close($curl_handle);
         if ($data === false) {
-            throw new Exception('CURL ERROR: ' . curl_error($curl_handle));
+            throw new Exception('CURL ERROR: ' . $curl_error);
         }
         return $data;
     }
