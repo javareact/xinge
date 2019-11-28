@@ -19,17 +19,18 @@ class RequestBase
     /**
      * 发起一个get或post请求
      * @param string $url 请求的url
-     * @param int $method 请求方式
      * @param array $params 请求参数
+     * @param string $method 请求方式
      * @param array $extra_conf curl配置, 高级需求可以用, 如
      * $extra_conf = array(
      *    CURLOPT_HEADER => true,
      *    CURLOPT_RETURNTRANSFER = false
      * )
+     * @param bool $ssl
      * @return bool|mixed 成功返回数据，失败返回false
      * @throws Exception
      */
-    public function exec($url, $params = array(), $method = self::METHOD_GET, $extra_conf = array())
+    public function exec($url, $params = array(), $method = self::METHOD_GET, $extra_conf = array(), $ssl = false)
     {
         //如果是get请求，直接将参数附在url后面
         if ($method == self::METHOD_GET) {
@@ -44,6 +45,11 @@ class RequestBase
             CURLOPT_RETURNTRANSFER => true, //不输出返回数据
             CURLOPT_CONNECTTIMEOUT => 3, // 连接超时时间
         );
+
+        if ($ssl === false) {
+            $curl_conf[CURLOPT_SSL_VERIFYHOST] = false;
+            $curl_conf[CURLOPT_SSL_VERIFYPEER] = false;
+        }
 
         //配置post请求额外需要的配置项
         if ($method == self::METHOD_POST) {
@@ -82,10 +88,11 @@ class RequestBase
      * @param array $params
      * @param string $method
      * @param array $extra_conf
+     * @param bool $ssl
      * @return bool|mixed
      * @throws Exception
      */
-    public function execForOld($url, $params = array(), $method = self::METHOD_GET, $extra_conf = array())
+    public function execForOld($url, $params = array(), $method = self::METHOD_GET, $extra_conf = array(), $ssl = false)
     {
         $params = is_array($params) ? http_build_query($params) : $params;
         //如果是get请求，直接将参数附在url后面
@@ -100,6 +107,11 @@ class RequestBase
             CURLOPT_RETURNTRANSFER => true, //不输出返回数据
             CURLOPT_CONNECTTIMEOUT => 3, // 连接超时时间
         );
+
+        if ($ssl === false) {
+            $curl_conf[CURLOPT_SSL_VERIFYHOST] = false;
+            $curl_conf[CURLOPT_SSL_VERIFYPEER] = false;
+        }
 
         //配置post请求额外需要的配置项
         if ($method == self::METHOD_POST) {

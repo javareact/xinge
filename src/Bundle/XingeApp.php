@@ -521,7 +521,6 @@ class XingeApp
             $params['loop_interval'] = $message->getLoopInterval();
             $params['loop_times']    = $message->getLoopTimes();
         }
-
         return $this->callRestful(self::RESTAPI_PUSH, $params);
     }
 
