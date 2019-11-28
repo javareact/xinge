@@ -114,6 +114,11 @@ class XingeApp
     const RESTAPI_ACCOUNT_QUERY = 'https://openapi.xg.qq.com/v3/device/account/query';
 
     /**
+     * Tag API
+     */
+    const RESTAPI_TAG = 'https://openapi.xg.qq.com/v3/device/tag';
+
+    /**
      * 发送
      */
     const RESTAPI_PUSH = 'https://openapi.xg.qq.com/v3/push/app';
@@ -1138,5 +1143,25 @@ class XingeApp
         $params['platform']      = $platform;
         $params['token_list']    = json_encode($token_list);
         return $this->callRestful(self::RESTAPI_ACCOUNT_QUERY, $params);
+    }
+
+    /**
+     * 清空指定设备所有tag
+     * @param $deviceToken
+     * @param $platform
+     * @return array|mixed
+     */
+    public function ClearTags($deviceToken, $platform)
+    {
+        $ret = array('ret_code' => -1);
+        if (empty($deviceToken)) {
+            $ret['err_msg'] = 'deviceToken is not valid';
+            return $ret;
+        }
+        $params                  = array();
+        $params['operator_type'] = 5;
+        $params['platform']      = $platform;
+        $params['token_list']    = json_encode([$deviceToken]);
+        return $this->callRestful(self::RESTAPI_TAG, $params);
     }
 }
