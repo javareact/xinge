@@ -4,6 +4,7 @@ namespace Javareact\Xinge\Bundle;
 
 use BlackBonjour\Stdlib\Util\HashMap;
 use Javareact\Xinge\Entity\Message;
+use Javareact\Xinge\Entity\MessageIOS;
 use Javareact\Xinge\Exceptions\Exception;
 use Javareact\Xinge\Exceptions\InvalidArgumentException;
 
@@ -87,6 +88,14 @@ class XingeApp
             return false;
     }
 
+    private function ValidateMessageTypeIos(MessageIOS $message, $environment)
+    {
+        if ($this->m_accessId >= self::IOS_MIN_ID && ($environment == self::IOSENV_PROD || $environment == self::IOSENV_DEV))
+            return true;
+        else
+            return false;
+    }
+
     /**
      * 请求接口V2
      * @param $url
@@ -141,38 +150,37 @@ class XingeApp
         return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $params);
     }
 
-//    /**
-//     * 推送给指定设备，限iOS系统使用
-//     *
-//     * @param deviceToken 目标设备token
-//     * @param message 待推送的消息
-//     * @param environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
-//     * @return array 服务器执行结果，JSON形式
-//     */
-//    public JSONObject pushSingleDevice(String deviceToken, MessageIOS message, int environment) {
-//    if (!$this->ValidateMessageType(message, environment)) {
-//        return new JSONObject("{'ret_code':-1,'err_msg':'message type or environment error!'}");
-//    }
-//    if (!message . isValid()) {
-//        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
-//    }
-//    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("device_token", deviceToken);
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
-//
-//        if (message . getLoopInterval() > 0 && message . getLoopTimes() > 0) {
-//            params . put("loop_interval", message . getLoopInterval());
-//            params . put("loop_times", message . getLoopTimes());
-//        }
-//
-//        return callRestful(XingeApp . RESTAPI_PUSHSINGLEDEVICE, params);
-//    }
+    /**
+     * 推送给指定设备，限iOS系统使用
+     *
+     * @param string deviceToken 目标设备token
+     * @param MessageIOS $message 待推送的消息
+     * @param string $environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
+     * @return array 服务器执行结果，JSON形式
+     */
+    public function pushSingleDeviceIos($deviceToken, MessageIOS $message, $environment)
+    {
+        if (!$this->ValidateMessageTypeIos($message, $environment)) {
+            return ['ret_code' => -1, 'err_msg' => 'message type or environment error!'];
+        }
+        if (!$message->isValid()) {
+            return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
+        }
+        $params = new HashMap;
+        $params->put("access_id", $this->m_accessId);
+        $params->put("expire_time", $message->getExpireTime());
+        $params->put("send_time", $message->getSendTime());
+        $params->put("device_token", $deviceToken);
+        $params->put("message_type", $message->getType());
+        $params->put("message", $message->toJson());
+        $params->put("timestamp", time());
+        $params->put("environment", $environment);
+        if ($message->getLoopInterval() > 0 && $message->getLoopTimes() > 0) {
+            $params->put("loop_interval", $message->getLoopInterval());
+            $params->put("loop_times", $message->getLoopTimes());
+        }
+        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $params);
+    }
 //
 //    /**
 //     * 推送给指定账号，限Android系统使用
@@ -190,15 +198,15 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("multi_pkg", message . getMultiPkg());
-//        params . put("device_type", deviceType);
-//        params . put("account", account);
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("multi_pkg", message . getMultiPkg());
+//        $params->put("device_type", deviceType);
+//        $params->put("account", account);
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHSINGLEACCOUNT, params);
 //    }
@@ -220,15 +228,15 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("device_type", deviceType);
-//        params . put("account", account);
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("device_type", deviceType);
+//        $params->put("account", account);
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
+//        $params->put("environment", environment);
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHSINGLEACCOUNT, params);
 //    }
@@ -250,14 +258,14 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("multi_pkg", message . getMultiPkg());
-//        params . put("device_type", deviceType);
-//        params . put("account_list", new JSONArray(accountList) . toString());
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("multi_pkg", message . getMultiPkg());
+//        $params->put("device_type", deviceType);
+//        $params->put("account_list", new JSONArray(accountList) . toString());
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHACCOUNTLIST, params);
 //    }
@@ -280,14 +288,14 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("device_type", deviceType);
-//        params . put("account_list", new JSONArray(accountList) . toString());
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("device_type", deviceType);
+//        $params->put("account_list", new JSONArray(accountList) . toString());
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
+//        $params->put("environment", environment);
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHACCOUNTLIST, params);
 //    }
@@ -307,18 +315,18 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("multi_pkg", message . getMultiPkg());
-//        params . put("device_type", deviceType);
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("multi_pkg", message . getMultiPkg());
+//        $params->put("device_type", deviceType);
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
 //
 //        if (message . getLoopInterval() > 0 && message . getLoopTimes() > 0) {
-//            params . put("loop_interval", message . getLoopInterval());
-//            params . put("loop_times", message . getLoopTimes());
+//            $params->put("loop_interval", message . getLoopInterval());
+//            $params->put("loop_times", message . getLoopTimes());
 //        }
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHALLDEVICE, params);
@@ -340,18 +348,18 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("device_type", deviceType);
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("device_type", deviceType);
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
+//        $params->put("environment", environment);
 //
 //        if (message . getLoopInterval() > 0 && message . getLoopTimes() > 0) {
-//            params . put("loop_interval", message . getLoopInterval());
-//            params . put("loop_times", message . getLoopTimes());
+//            $params->put("loop_interval", message . getLoopInterval());
+//            $params->put("loop_times", message . getLoopTimes());
 //        }
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHALLDEVICE, params);
@@ -374,20 +382,20 @@ class XingeApp
 //        return new JSONObject("{'ret_code':-1,'err_msg':'param invalid!'}");
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("multi_pkg", message . getMultiPkg());
-//        params . put("device_type", deviceType);
-//        params . put("message_type", message . getType());
-//        params . put("tags_list", new JSONArray(tagList) . toString());
-//        params . put("tags_op", tagOp);
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("multi_pkg", message . getMultiPkg());
+//        $params->put("device_type", deviceType);
+//        $params->put("message_type", message . getType());
+//        $params->put("tags_list", new JSONArray(tagList) . toString());
+//        $params->put("tags_op", tagOp);
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
 //
 //        if (message . getLoopInterval() > 0 && message . getLoopTimes() > 0) {
-//            params . put("loop_interval", message . getLoopInterval());
-//            params . put("loop_times", message . getLoopTimes());
+//            $params->put("loop_interval", message . getLoopInterval());
+//            $params->put("loop_times", message . getLoopTimes());
 //        }
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHTAGS, params);
@@ -411,20 +419,20 @@ class XingeApp
 //        return new JSONObject("{'ret_code':-1,'err_msg':'param invalid!'}");
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("send_time", message . getSendTime());
-//        params . put("device_type", deviceType);
-//        params . put("message_type", message . getType());
-//        params . put("tags_list", new JSONArray(tagList) . toString());
-//        params . put("tags_op", tagOp);
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("send_time", message . getSendTime());
+//        $params->put("device_type", deviceType);
+//        $params->put("message_type", message . getType());
+//        $params->put("tags_list", new JSONArray(tagList) . toString());
+//        $params->put("tags_op", tagOp);
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
+//        $params->put("environment", environment);
 //
 //        if (message . getLoopInterval() > 0 && message . getLoopTimes() > 0) {
-//            params . put("loop_interval", message . getLoopInterval());
-//            params . put("loop_times", message . getLoopTimes());
+//            $params->put("loop_interval", message . getLoopInterval());
+//            $params->put("loop_times", message . getLoopTimes());
 //        }
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHTAGS, params);
@@ -445,12 +453,12 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("multi_pkg", message . getMultiPkg());
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("multi_pkg", message . getMultiPkg());
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_CREATEMULTIPUSH, params);
 //    }
@@ -471,12 +479,12 @@ class XingeApp
 //        return ['ret_code' => -1, 'err_msg' => 'message invalid!'];
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("expire_time", message . getExpireTime());
-//        params . put("message_type", message . getType());
-//        params . put("message", message . toJson());
-//        params . put("timestamp",time());
-//        params . put("environment", environment);
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("expire_time", message . getExpireTime());
+//        $params->put("message_type", message . getType());
+//        $params->put("message", message . toJson());
+//        $params->put("timestamp",time());
+//        $params->put("environment", environment);
 //
 //        return callRestful(XingeApp . RESTAPI_CREATEMULTIPUSH, params);
 //    }
@@ -494,10 +502,10 @@ class XingeApp
 //        return new JSONObject("{'ret_code':-1,'err_msg':'pushId invalid!'}");
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("push_id", pushId);
-//        params . put("account_list", new JSONArray(accountList) . toString());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("push_id", pushId);
+//        $params->put("account_list", new JSONArray(accountList) . toString());
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHACCOUNTLISTMULTIPLE, params);
 //    }
@@ -515,10 +523,10 @@ class XingeApp
 //        return new JSONObject("{'ret_code':-1,'err_msg':'pushId invalid!'}");
 //    }
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("push_id", pushId);
-//        params . put("device_list", new JSONArray(deviceList) . toString());
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("push_id", pushId);
+//        $params->put("device_list", new JSONArray(deviceList) . toString());
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_PUSHDEVICELISTMULTIPLE, params);
 //    }
@@ -531,15 +539,15 @@ class XingeApp
 //     */
 //    public JSONObject queryPushStatus(List<String> pushIdList) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("timestamp",time());
 //        JSONArray jArray = new JSONArray();
 //        for (String pushId : pushIdList) {
 //            JSONObject js = new JSONObject();
 //            js . put("push_id", pushId);
 //            jArray . put(js);
 //        }
-//        params . put("push_ids", jArray . toString());
+//        $params->put("push_ids", jArray . toString());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYPUSHSTATUS, params);
 //    }
@@ -551,8 +559,8 @@ class XingeApp
 //     */
 //    public JSONObject queryDeviceCount(){
 //Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYDEVICECOUNT, params);
 //    }
@@ -566,10 +574,10 @@ class XingeApp
 //     */
 //    public JSONObject queryTags(int start, int limit) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("start", start);
-//        params . put("limit", limit);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("start", start);
+//        $params->put("limit", limit);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYTAGS, params);
 //    }
@@ -591,9 +599,9 @@ class XingeApp
 //     */
 //    public JSONObject queryTagTokenNum(String tag) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("tag", tag);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("tag", tag);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYTAGTOKENNUM, params);
 //    }
@@ -606,9 +614,9 @@ class XingeApp
 //     */
 //    public JSONObject queryTokenTags(String deviceToken) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("device_token", deviceToken);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("device_token", deviceToken);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYTOKENTAGS, params);
 //    }
@@ -621,9 +629,9 @@ class XingeApp
 //     */
 //    public JSONObject cancelTimingPush(String pushId) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("push_id", pushId);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("push_id", pushId);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_CANCELTIMINGPUSH, params);
 //    }
@@ -655,7 +663,7 @@ class XingeApp
 //            tag_token_list . add(singleTagToken);
 //        }
 //
-//        params . put("tag_token_list", new JSONArray(tag_token_list) . toString());
+//        $params->put("tag_token_list", new JSONArray(tag_token_list) . toString());
 //
 //        return callRestful(XingeApp . RESTAPI_BATCHSETTAG, params);
 //    }
@@ -687,7 +695,7 @@ class XingeApp
 //            tag_token_list . add(singleTagToken);
 //        }
 //
-//        params . put("tag_token_list", new JSONArray(tag_token_list) . toString());
+//        $params->put("tag_token_list", new JSONArray(tag_token_list) . toString());
 //
 //        return callRestful(XingeApp . RESTAPI_BATCHDELTAG, params);
 //    }
@@ -700,9 +708,9 @@ class XingeApp
 //     */
 //    public JSONObject queryInfoOfToken(String deviceToken) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("device_token", deviceToken);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("device_token", deviceToken);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYINFOOFTOKEN, params);
 //    }
@@ -715,9 +723,9 @@ class XingeApp
 //     */
 //    public JSONObject queryTokensOfAccount(String account) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("account", account);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("account", account);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_QUERYTOKENSOFACCOUNT, params);
 //    }
@@ -731,10 +739,10 @@ class XingeApp
 //     */
 //    public JSONObject deleteTokenOfAccount(String account, String deviceToken) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("account", account);
-//        params . put("device_token", deviceToken);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("account", account);
+//        $params->put("device_token", deviceToken);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_DELETETOKENOFACCOUNT, params);
 //    }
@@ -747,10 +755,11 @@ class XingeApp
 //     */
 //    public JSONObject deleteAllTokensOfAccount(String account) {
 //    Map < String, Object > params = new HashMap < String, Object > ();
-//        params . put("access_id", this . m_accessId);
-//        params . put("account", account);
-//        params . put("timestamp",time());
+//        $params->put("access_id", this . m_accessId);
+//        $params->put("account", account);
+//        $params->put("timestamp",time());
 //
 //        return callRestful(XingeApp . RESTAPI_DELETEALLTOKENSOFACCOUNT, params);
 //    }
+
 }
