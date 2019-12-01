@@ -1,11 +1,11 @@
 {
   "name": "javareact/xinge",
   "type": "library",
-  "description": "腾讯移动信鸽推送SDK(PHP版本),Xinge API PHP Client",
+  "description": "腾讯移动信鸽推送SDK(PHP版本), Xinge API PHP Client",
   "homepage": "https://github.com/javareact/xinge",
   "license": "MIT",
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.2",
     "ext-curl": "*",
     "ext-json": "*",
     "blackbonjour/stdlib": "2.*"
@@ -28,7 +28,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.0-dev"
+      "dev-master": "2.0-dev"
     }
   }
 }
