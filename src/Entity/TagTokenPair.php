@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Javareact\Xinge\Bundle;
+namespace Javareact\Xinge\Entity;
 
 
 class TagTokenPair
@@ -16,7 +15,7 @@ class TagTokenPair
      */
     public function __construct($tag, $token)
     {
-        $this->tag   = strval($tag);
+        $this->tag = strval($tag);
         $this->token = strval($token);
     }
 

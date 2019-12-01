@@ -1,8 +1,6 @@
 <?php
 
-
-namespace Javareact\Xinge\Bundle;
-
+namespace Javareact\Xinge\Entity;
 
 class ClickAction
 {
@@ -18,8 +16,8 @@ class ClickAction
     private $m_packageName;
 
     const TYPE_ACTIVITY = 1;
-    const TYPE_URL      = 2;
-    const TYPE_INTENT   = 3;
+    const TYPE_URL = 2;
+    const TYPE_INTENT = 3;
 
     /**
      * 动作类型
@@ -27,8 +25,8 @@ class ClickAction
      */
     public function __construct()
     {
-        $this->m_atyAttrIntentFlag           = 0;
-        $this->m_atyAttrPendingIntentFlag    = 0;
+        $this->m_atyAttrIntentFlag = 0;
+        $this->m_atyAttrPendingIntentFlag = 0;
         $this->m_confirmOnPackageDownloadUrl = 1;
     }
 
@@ -84,11 +82,11 @@ class ClickAction
 
     public function toJson()
     {
-        $ret                = array();
+        $ret = array();
         $ret['action_type'] = $this->m_actionType;
-        $ret['browser']     = array('url' => $this->m_url, 'confirm' => $this->m_confirmOnUrl);
-        $ret['activity']    = $this->m_activity;
-        $ret['intent']      = $this->m_intent;
+        $ret['browser'] = array('url' => $this->m_url, 'confirm' => $this->m_confirmOnUrl);
+        $ret['activity'] = $this->m_activity;
+        $ret['intent'] = $this->m_intent;
 
         $aty_attr = array();
         if (isset($this->m_atyAttrIntentFlag)) {
