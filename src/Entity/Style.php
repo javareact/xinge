@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Javareact\Xinge\Bundle;
+namespace Javareact\Xinge\Entity;
 
 
 class Style
@@ -32,13 +31,13 @@ class Style
     public function __construct($builderId, $ring = 0, $vibrate = 0, $clearable = 1, $nId = 0, $lights = 1, $iconType = 0, $styleId = 1)
     {
         $this->m_builderId = $builderId;
-        $this->m_ring      = $ring;
-        $this->m_vibrate   = $vibrate;
+        $this->m_ring = $ring;
+        $this->m_vibrate = $vibrate;
         $this->m_clearable = $clearable;
-        $this->m_nId       = $nId;
-        $this->m_lights    = $lights;
-        $this->m_iconType  = $iconType;
-        $this->m_styleId   = $styleId;
+        $this->m_nId = $nId;
+        $this->m_lights = $lights;
+        $this->m_iconType = $iconType;
+        $this->m_styleId = $styleId;
     }
 
     public function __destruct()

@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Javareact\Xinge\Bundle;
+namespace Javareact\Xinge\Entity;
 
 
 class MessageIOS
@@ -22,9 +21,9 @@ class MessageIOS
     private $m_loopInterval;
     private $m_loopTimes;
 
-    const TYPE_APNS_NOTIFICATION   = 'notify';
+    const TYPE_APNS_NOTIFICATION = 'notify';
     const TYPE_REMOTE_NOTIFICATION = 'message';
-    const MAX_LOOP_TASK_DAYS       = 15;
+    const MAX_LOOP_TASK_DAYS = 15;
 
     /**
      * MessageIOS constructor.
@@ -32,7 +31,7 @@ class MessageIOS
     public function __construct()
     {
         $this->m_acceptTimes = array();
-        $this->m_type        = self::TYPE_APNS_NOTIFICATION;
+        $this->m_type = self::TYPE_APNS_NOTIFICATION;
     }
 
     public function __destruct()
@@ -154,15 +153,15 @@ class MessageIOS
             return $this->m_raw;
         }
 
-        $ret                = array();
-        $ret['ios']         = $this->m_custom;
+        $ret = array();
+        $ret['ios'] = $this->m_custom;
         $ret['accept_time'] = $this->acceptTimeToJson();
 
         $aps = array();
         if ($this->m_type == self::TYPE_APNS_NOTIFICATION) {
-            $ret['title']   = $this->m_title;
+            $ret['title'] = $this->m_title;
             $ret['content'] = $this->m_content;
-            $aps['alert']   = $this->m_alert;
+            $aps['alert'] = $this->m_alert;
             if (isset($this->m_badge)) {
                 $aps['badge'] = $this->m_badge;
             }

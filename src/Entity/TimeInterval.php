@@ -1,8 +1,6 @@
 <?php
 
-
-namespace Javareact\Xinge\Bundle;
-
+namespace Javareact\Xinge\Entity;
 
 class TimeInterval
 {
@@ -21,9 +19,9 @@ class TimeInterval
     public function __construct($startHour, $startMin, $endHour, $endMin)
     {
         $this->m_startHour = $startHour;
-        $this->m_startMin  = $startMin;
-        $this->m_endHour   = $endHour;
-        $this->m_endMin    = $endMin;
+        $this->m_startMin = $startMin;
+        $this->m_endHour = $endHour;
+        $this->m_endMin = $endMin;
     }
 
     public function __destruct()
@@ -34,7 +32,7 @@ class TimeInterval
     {
         return array(
             'start' => array('hour' => strval($this->m_startHour), 'min' => strval($this->m_startMin)),
-            'end'   => array('hour' => strval($this->m_endHour), 'min' => strval($this->m_endMin)),
+            'end' => array('hour' => strval($this->m_endHour), 'min' => strval($this->m_endMin)),
         );
     }
 
