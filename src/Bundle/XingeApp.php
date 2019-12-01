@@ -2,7 +2,7 @@
 
 namespace Javareact\Xinge\Bundle;
 
-use BlackBonjour\Stdlib\Util\HashMap;
+use Javareact\Xinge\Collection\HashMap;
 use Javareact\Xinge\Entity\Message;
 use Javareact\Xinge\Entity\MessageIOS;
 use Javareact\Xinge\Entity\TagTokenPair;
@@ -131,7 +131,7 @@ class XingeApp
      */
     protected function callRestful($url, HashMap $params)
     {
-        $paramsBase = new ParamsBase($$params);
+        $paramsBase = new ParamsBase($params);
         $sign = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
         $params['sign'] = $sign;
         $requestBase = new RequestBase();

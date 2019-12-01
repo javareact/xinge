@@ -238,7 +238,7 @@ class XingePushTest extends TestCase
      */
     public function testDemoQueryTags()
     {
-        $push = new XingeApp($this->appId, $this->secretKey, $this->accessId);
+        $push = new XingeApp($this->accessId, $this->secretKey);
         $ret = $push->QueryTags(0, 100);
         $this->assertNotEmpty($ret);
     }

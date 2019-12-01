@@ -7,8 +7,7 @@
   "require": {
     "php": ">=7.2",
     "ext-curl": "*",
-    "ext-json": "*",
-    "blackbonjour/stdlib": "2.*"
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "*"

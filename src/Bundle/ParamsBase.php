@@ -4,6 +4,8 @@
 namespace Javareact\Xinge\Bundle;
 
 
+use Javareact\Xinge\Collection\HashMap;
+
 class ParamsBase
 {
 
@@ -14,8 +16,9 @@ class ParamsBase
 
     /**
      * 构造函数
+     * @param HashMap $params
      */
-    public function __construct($params)
+    public function __construct(HashMap $params)
     {
         if (!is_array($params)) {
             return array();
@@ -45,8 +48,8 @@ class ParamsBase
     {
         //将参数进行升序排序
         $param_str = '';
-        $method    = strtoupper($method);
-        $url_arr   = parse_url($url);
+        $method = strtoupper($method);
+        $url_arr = parse_url($url);
         if (isset($url_arr['host']) && isset($url_arr['path'])) {
             $url = $url_arr['host'] . $url_arr['path'];
         }

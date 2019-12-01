@@ -3,7 +3,7 @@
 namespace Javareact\Xinge\Bundle;
 
 
-use BlackBonjour\Stdlib\Util\HashMap;
+use Javareact\Xinge\Collection\HashMap;
 use Javareact\Xinge\Exceptions\Exception;
 
 class RequestBase
