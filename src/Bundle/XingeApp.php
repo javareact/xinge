@@ -31,9 +31,6 @@ class XingeApp
     const RESTAPI_DELETETOKENOFACCOUNT = "http://openapi.xg.qq.com/v2/application/del_app_account_tokens";
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = "http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens";
 
-    const HTTP_POST = "POST";
-    const HTTP_GET = "GET";
-
     const DEVICE_ALL = 0;
     const DEVICE_BROWSER = 1;
     const DEVICE_PC = 2;
@@ -71,6 +68,17 @@ class XingeApp
     {
     }
 
+    /**
+     * json转换为数组
+     * @param $json
+     * @return mixed
+     */
+    protected function json2Array($json)
+    {
+        $json = stripslashes($json);
+        return json_decode($json, true);
+    }
+
     protected function ValidateMessageType($message)
     {
         if ($this->m_accessId < self::IOS_MIN_ID)
@@ -79,13 +87,38 @@ class XingeApp
             return false;
     }
 
+    /**
+     * 请求接口V2
+     * @param $url
+     * @param $params
+     * @return mixed
+     */
+    protected function callRestful($url, HashMap $params)
+    {
+        $paramsBase = new ParamsBase($params);
+        $sign = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
+        $params['sign'] = $sign;
+        $requestBase = new RequestBase();
+        try {
+            $response = $requestBase->exec(
+                $url,
+                $params,
+                RequestBase::METHOD_POST
+            );
+        } catch (Exception $e) {
+            return null;
+        }
+        $ret = $this->json2Array($response);
+        return $ret;
+    }
+
     //简易API接口
     //详细API接口
     /**
      * 推送给指定设备，限Android系统使用
      *
-     * @param deviceToken 目标设备token
-     * @param message 待推送的消息
+     * @param string $deviceToken 目标设备token
+     * @param Message $message 待推送的消息
      * @return array 服务器执行结果，JSON形式
      */
     public function pushSingleDevice(string $deviceToken, Message $message)
@@ -105,7 +138,7 @@ class XingeApp
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
-        return callRestful(XingeApp . RESTAPI_PUSHSINGLEDEVICE, params);
+        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $params);
     }
 
 //    /**
