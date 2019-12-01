@@ -20,9 +20,7 @@ class ParamsBase
      */
     public function __construct(HashMap $params)
     {
-        if (!is_array($params)) {
-            return array();
-        }
+        $params = $params->toArray();
         foreach ($params as $key => $value) {
             //如果是非法的key值，则不使用这个key
             $this->_params[$key] = $value;
