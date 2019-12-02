@@ -13,8 +13,7 @@ use Javareact\Xinge\Bundle\XingeApp;
 
 class XingePushTest extends TestCase
 {
-    public $appId = 'appId';//V2不适用此字段
-    public $accessId = 'accessId';
+    public $accessId  = 'accessId';
     public $secretKey = 'secretKey';
 
 
@@ -38,7 +37,7 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
-        $style = new Style(0, 1, 1, 0, 0);
+        $style  = new Style(0, 1, 1, 0, 0);
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_URL);
         $action->setUrl("http://xg.qq.com");
@@ -51,6 +50,9 @@ class XingePushTest extends TestCase
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
         $ret = $push->PushSingleDevice('token', $mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -69,6 +71,9 @@ class XingePushTest extends TestCase
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $mess->setType(Message::TYPE_MESSAGE);
         $ret = $push->PushSingleDevice('token', $mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -95,7 +100,10 @@ class XingePushTest extends TestCase
         $mess->addAcceptTime($acceptTime);
         // $raw = '{"xg_max_payload":1,"accept_time":[{"start":{"hour":"20","min":"0"},"end":{"hour":"23","min":"59"}}],"aps":{"alert":"="}}';
         // $mess->setRaw($raw);
-        $ret = $push->PushSingleDevice('token', $mess, XingeApp::IOSENV_DEV);
+        $ret = $push->PushSingleDeviceIos('token', $mess, XingeApp::IOSENV_DEV);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -114,6 +122,9 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $ret = $push->PushSingleAccount('joelliu', $mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -132,7 +143,10 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $accountList = array('joelliu', 'hoepeng');
-        $ret = $push->PushAccountList($accountList, $mess);
+        $ret         = $push->PushAccountList($accountList, $mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -157,7 +171,10 @@ class XingePushTest extends TestCase
         $mess->setCustom($custom);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushSingleAccount('joelliu', $mess, XingeApp::IOSENV_DEV);
+        $ret = $push->PushSingleAccountIos('joelliu', $mess, XingeApp::IOSENV_DEV);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -176,7 +193,7 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
-        $style = new Style(0, 1, 1, 0, 0);
+        $style  = new Style(0, 1, 1, 0, 0);
         $action = new ClickAction();
         $action->setActionType(ClickAction::TYPE_URL);
         $action->setUrl("http://xg.qq.com");
@@ -186,7 +203,10 @@ class XingePushTest extends TestCase
         $mess->setAction($action);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushAllDevices($mess);
+        $ret = $push->PushAllDevices($mess);//fixme
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -205,7 +225,10 @@ class XingePushTest extends TestCase
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         $tagList = array('Demo3', 'Demo2');
-        $ret = $push->PushTags($tagList, 'OR', $mess);
+        $ret     = $push->PushTags($tagList, 'OR', $mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -215,9 +238,12 @@ class XingePushTest extends TestCase
      */
     public function testDemoQueryPushStatus()
     {
-        $push = new XingeApp($this->accessId, $this->secretKey);
+        $push       = new XingeApp($this->accessId, $this->secretKey);
         $pushIdList = array('31', '32');
-        $ret = $push->QueryPushStatus($pushIdList);
+        $ret        = $push->QueryPushStatus($pushIdList);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -228,7 +254,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryDeviceCount()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryDeviceCount();
+        $ret  = $push->QueryDeviceCount();
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -240,7 +269,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryTags()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryTags(0, 100);
+        $ret  = $push->QueryTags(0, 100);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -251,7 +283,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryTagTokenNum()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryTagTokenNum("tag");
+        $ret  = $push->QueryTagTokenNum("tag");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -263,7 +298,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryTokenTags()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryTokenTags("token");
+        $ret  = $push->QueryTokenTags("token");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -274,7 +312,10 @@ class XingePushTest extends TestCase
     public function testDemoCancelTimingPush()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->CancelTimingPush("32");
+        $ret  = $push->CancelTimingPush("32");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -290,7 +331,10 @@ class XingePushTest extends TestCase
         array_push($pairs, new TagTokenPair("tag1", "token00000000000000000000000000000000001"));
 
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->BatchSetTag($pairs);
+        $ret  = $push->BatchSetTag($pairs);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -306,7 +350,10 @@ class XingePushTest extends TestCase
         array_push($pairs, new TagTokenPair("tag1", "token00000000000000000000000000000000001"));
 
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->BatchDelTag($pairs);
+        $ret  = $push->BatchDelTag($pairs);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -317,7 +364,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryInfoOfToken()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryInfoOfToken("token");
+        $ret  = $push->QueryInfoOfToken("token");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -328,7 +378,10 @@ class XingePushTest extends TestCase
     public function testDemoQueryTokensOfAccount()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->QueryTokensOfAccount("nickName");
+        $ret  = $push->QueryTokensOfAccount("nickName");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 
@@ -339,7 +392,10 @@ class XingePushTest extends TestCase
     public function testDemoDeleteAllTokensOfAccount()
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
-        $ret = $push->DeleteAllTokensOfAccount("nickName");
+        $ret  = $push->DeleteAllTokensOfAccount("nickName");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
         $this->assertNotEmpty($ret);
     }
 }

@@ -18,9 +18,10 @@ class Message
     private $m_raw;
     private $m_loopInterval;
     private $m_loopTimes;
-
-    const TYPE_NOTIFICATION = 'notify';
-    const TYPE_MESSAGE = 'message';
+    /** @var int 表示Android通知栏消息 */
+    const TYPE_NOTIFICATION = 1;
+    /** @var int 表示Android透传消息 */
+    const TYPE_MESSAGE       = 2;
     const MAX_LOOP_TASK_DAYS = 15;
 
     /**
@@ -29,10 +30,10 @@ class Message
     public function __construct()
     {
         $this->m_acceptTimes = array();
-        $this->m_multiPkg = 0;
-        $this->m_raw = "";
-        $this->m_style = new Style(0);
-        $this->m_action = new ClickAction();
+        $this->m_multiPkg    = 0;
+        $this->m_raw         = "";
+        $this->m_style       = new Style(0);
+        $this->m_action      = new ClickAction();
     }
 
     public function __destruct()
@@ -143,28 +144,30 @@ class Message
         $this->m_loopTimes = $loopTimes;
     }
 
+    /**
+     * @return string
+     */
     public function toJson()
     {
         if (!empty($this->m_raw)) {
             return $this->m_raw;
         }
-
         $ret = array();
         if ($this->m_type == self::TYPE_NOTIFICATION) {
-            $ret['title'] = $this->m_title;
-            $ret['content'] = $this->m_content;
-            $ret['accept_time'] = $this->acceptTimeToJson();
-            $ret_android = array();
+            $ret['title']              = $this->m_title;
+            $ret['content']            = $this->m_content;
+            $ret['accept_time']        = $this->acceptTimeToJson();
+            $ret_android               = array();
             $ret_android['builder_id'] = $this->m_style->getBuilderId();
-            $ret_android['ring'] = $this->m_style->getRing();
-            $ret_android['vibrate'] = $this->m_style->getVibrate();
-            $ret_android['clearable'] = $this->m_style->getClearable();
-            $ret_android['n_id'] = $this->m_style->getNId();
+            $ret_android['ring']       = $this->m_style->getRing();
+            $ret_android['vibrate']    = $this->m_style->getVibrate();
+            $ret_android['clearable']  = $this->m_style->getClearable();
+            $ret_android['n_id']       = $this->m_style->getNId();
 
             if (!is_null($this->m_style->getRingRaw())) {
                 $ret_android['ring_raw'] = $this->m_style->getRingRaw();
             }
-            $ret_android['lights'] = $this->m_style->getLights();
+            $ret_android['lights']    = $this->m_style->getLights();
             $ret_android['icon_type'] = $this->m_style->getIconType();
             if (!is_null($this->m_style->getIconRes())) {
                 $ret_android['icon_res'] = $this->m_style->getIconRes();
@@ -179,16 +182,18 @@ class Message
             $ret['android'] = $ret_android;
 
         } else if ($this->m_type == self::TYPE_MESSAGE) {
-            $ret['title'] = $this->m_title;
-            $ret['content'] = $this->m_content;
+            $ret['title']       = $this->m_title;
+            $ret['content']     = $this->m_content;
             $ret['accept_time'] = $this->acceptTimeToJson();
         }
         $ret['android']['custom_content'] = $this->m_custom;
-        return $ret;
+        return json_encode($ret);
     }
 
     public function isValid()
     {
+        //暂时不验证
+        return true;
         if (is_string($this->m_raw) && !empty($this->raw)) {
             return true;
         }
