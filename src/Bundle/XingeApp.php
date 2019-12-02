@@ -131,10 +131,10 @@ class XingeApp
      */
     protected function callRestful($url, HashMap $params)
     {
-        $paramsBase     = new ParamsBase($params);
-        $sign           = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
-        $params['sign'] = $sign;
-        $requestBase    = new RequestBase();
+        $paramsBase = new ParamsBase($params);
+        $sign       = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
+        $params->put('sign', $sign);
+        $requestBase = new RequestBase();
         try {
             $response = $requestBase->exec(
                 $url,
@@ -174,7 +174,7 @@ class XingeApp
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
-        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $$params);
+        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $params);
     }
 
     /**
@@ -206,7 +206,7 @@ class XingeApp
             $params->put("loop_interval", $message->getLoopInterval());
             $params->put("loop_times", $message->getLoopTimes());
         }
-        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $$params);
+        return $this->callRestful(self:: RESTAPI_PUSHSINGLEDEVICE, $params);
     }
 //
 
@@ -236,7 +236,7 @@ class XingeApp
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
-        return $this->callRestful(self:: RESTAPI_PUSHSINGLEACCOUNT, $$params);
+        return $this->callRestful(self:: RESTAPI_PUSHSINGLEACCOUNT, $params);
     }
 
 
@@ -531,7 +531,7 @@ class XingeApp
      */
     public function pushAccountListMultiple($pushId, array $accountList)
     {
-        if ($$pushId <= 0) {
+        if ($pushId <= 0) {
             return ['ret_code' => -1, 'err_msg' => 'pushId invalid!'];
         }
         $params = new HashMap;

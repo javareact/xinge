@@ -20,10 +20,11 @@ class MessageIOS
     private $m_category;
     private $m_loopInterval;
     private $m_loopTimes;
-
-    const TYPE_APNS_NOTIFICATION = 'notify';
-    const TYPE_REMOTE_NOTIFICATION = 'message';
-    const MAX_LOOP_TASK_DAYS = 15;
+    /** @var int    iOS平台用，必须为0，不区分通知栏消息和静默消息 */
+    const TYPE_APNS_NOTIFICATION = 0;
+    /** @var int    iOS平台用，必须为0，不区分通知栏消息和静默消息 */
+    const TYPE_REMOTE_NOTIFICATION = 0;
+    const MAX_LOOP_TASK_DAYS       = 15;
 
     /**
      * MessageIOS constructor.
@@ -31,7 +32,7 @@ class MessageIOS
     public function __construct()
     {
         $this->m_acceptTimes = array();
-        $this->m_type = self::TYPE_APNS_NOTIFICATION;
+        $this->m_type        = self::TYPE_APNS_NOTIFICATION;
     }
 
     public function __destruct()
@@ -153,15 +154,15 @@ class MessageIOS
             return $this->m_raw;
         }
 
-        $ret = array();
-        $ret['ios'] = $this->m_custom;
+        $ret                = array();
+        $ret['ios']         = $this->m_custom;
         $ret['accept_time'] = $this->acceptTimeToJson();
 
         $aps = array();
         if ($this->m_type == self::TYPE_APNS_NOTIFICATION) {
-            $ret['title'] = $this->m_title;
+            $ret['title']   = $this->m_title;
             $ret['content'] = $this->m_content;
-            $aps['alert'] = $this->m_alert;
+            $aps['alert']   = $this->m_alert;
             if (isset($this->m_badge)) {
                 $aps['badge'] = $this->m_badge;
             }
@@ -178,11 +179,12 @@ class MessageIOS
             $aps['content-available'] = 1;
         }
         $ret['ios']['aps'] = $aps;
-        return $ret;
+        return json_encode($ret);
     }
 
     public function isValid()
     {
+        return true;//暂时不验证
         if (isset($this->m_expireTime)) {
             if (!is_int($this->m_expireTime) || $this->m_expireTime > 3 * 24 * 60 * 60) {
                 return false;
