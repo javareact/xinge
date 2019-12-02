@@ -12,36 +12,36 @@ use Javareact\Xinge\Exceptions\InvalidArgumentException;
 class XingeApp
 {
 
-    const RESTAPI_PUSHSINGLEDEVICE = "http://openapi.xg.qq.com/v2/push/single_device";
-    const RESTAPI_PUSHSINGLEACCOUNT = "http://openapi.xg.qq.com/v2/push/single_account";
-    const RESTAPI_PUSHACCOUNTLIST = "http://openapi.xg.qq.com/v2/push/account_list";
-    const RESTAPI_PUSHALLDEVICE = "http://openapi.xg.qq.com/v2/push/all_device";
-    const RESTAPI_PUSHTAGS = "http://openapi.xg.qq.com/v2/push/tags_device";
-    const RESTAPI_QUERYPUSHSTATUS = "http://openapi.xg.qq.com/v2/push/get_msg_status";
-    const RESTAPI_QUERYDEVICECOUNT = "http://openapi.xg.qq.com/v2/application/get_app_device_num";
-    const RESTAPI_QUERYTAGS = "http://openapi.xg.qq.com/v2/tags/query_app_tags";
-    const RESTAPI_CANCELTIMINGPUSH = "http://openapi.xg.qq.com/v2/push/cancel_timing_task";
-    const RESTAPI_BATCHSETTAG = "http://openapi.xg.qq.com/v2/tags/batch_set";
-    const RESTAPI_BATCHDELTAG = "http://openapi.xg.qq.com/v2/tags/batch_del";
-    const RESTAPI_QUERYTOKENTAGS = "http://openapi.xg.qq.com/v2/tags/query_token_tags";
-    const RESTAPI_QUERYTAGTOKENNUM = "http://openapi.xg.qq.com/v2/tags/query_tag_token_num";
-    const RESTAPI_CREATEMULTIPUSH = "http://openapi.xg.qq.com/v2/push/create_multipush";
-    const RESTAPI_PUSHACCOUNTLISTMULTIPLE = "http://openapi.xg.qq.com/v2/push/account_list_multiple";
-    const RESTAPI_PUSHDEVICELISTMULTIPLE = "http://openapi.xg.qq.com/v2/push/device_list_multiple";
-    const RESTAPI_QUERYINFOOFTOKEN = "http://openapi.xg.qq.com/v2/application/get_app_token_info";
-    const RESTAPI_QUERYTOKENSOFACCOUNT = "http://openapi.xg.qq.com/v2/application/get_app_account_tokens";
-    const RESTAPI_DELETETOKENOFACCOUNT = "http://openapi.xg.qq.com/v2/application/del_app_account_tokens";
+    const RESTAPI_PUSHSINGLEDEVICE         = "http://openapi.xg.qq.com/v2/push/single_device";
+    const RESTAPI_PUSHSINGLEACCOUNT        = "http://openapi.xg.qq.com/v2/push/single_account";
+    const RESTAPI_PUSHACCOUNTLIST          = "http://openapi.xg.qq.com/v2/push/account_list";
+    const RESTAPI_PUSHALLDEVICE            = "http://openapi.xg.qq.com/v2/push/all_device";
+    const RESTAPI_PUSHTAGS                 = "http://openapi.xg.qq.com/v2/push/tags_device";
+    const RESTAPI_QUERYPUSHSTATUS          = "http://openapi.xg.qq.com/v2/push/get_msg_status";
+    const RESTAPI_QUERYDEVICECOUNT         = "http://openapi.xg.qq.com/v2/application/get_app_device_num";
+    const RESTAPI_QUERYTAGS                = "http://openapi.xg.qq.com/v2/tags/query_app_tags";
+    const RESTAPI_CANCELTIMINGPUSH         = "http://openapi.xg.qq.com/v2/push/cancel_timing_task";
+    const RESTAPI_BATCHSETTAG              = "http://openapi.xg.qq.com/v2/tags/batch_set";
+    const RESTAPI_BATCHDELTAG              = "http://openapi.xg.qq.com/v2/tags/batch_del";
+    const RESTAPI_QUERYTOKENTAGS           = "http://openapi.xg.qq.com/v2/tags/query_token_tags";
+    const RESTAPI_QUERYTAGTOKENNUM         = "http://openapi.xg.qq.com/v2/tags/query_tag_token_num";
+    const RESTAPI_CREATEMULTIPUSH          = "http://openapi.xg.qq.com/v2/push/create_multipush";
+    const RESTAPI_PUSHACCOUNTLISTMULTIPLE  = "http://openapi.xg.qq.com/v2/push/account_list_multiple";
+    const RESTAPI_PUSHDEVICELISTMULTIPLE   = "http://openapi.xg.qq.com/v2/push/device_list_multiple";
+    const RESTAPI_QUERYINFOOFTOKEN         = "http://openapi.xg.qq.com/v2/application/get_app_token_info";
+    const RESTAPI_QUERYTOKENSOFACCOUNT     = "http://openapi.xg.qq.com/v2/application/get_app_account_tokens";
+    const RESTAPI_DELETETOKENOFACCOUNT     = "http://openapi.xg.qq.com/v2/application/del_app_account_tokens";
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = "http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens";
 
-    const DEVICE_ALL = 0;
-    const DEVICE_BROWSER = 1;
-    const DEVICE_PC = 2;
-    const DEVICE_ANDROID = 3;
-    const DEVICE_IOS = 4;
+    const DEVICE_ALL      = 0;
+    const DEVICE_BROWSER  = 1;
+    const DEVICE_PC       = 2;
+    const DEVICE_ANDROID  = 3;
+    const DEVICE_IOS      = 4;
     const DEVICE_WINPHONE = 5;
 
     const IOSENV_PROD = 1;
-    const IOSENV_DEV = 2;
+    const IOSENV_DEV  = 2;
 
     const IOS_MIN_ID = 2200000000;
 
@@ -59,7 +59,7 @@ class XingeApp
         if (empty($accessId) || empty($secretKey)) {
             throw new InvalidArgumentException();
         }
-        $this->m_accessId = $accessId;
+        $this->m_accessId  = $accessId;
         $this->m_secretKey = $secretKey;
     }
 
@@ -131,10 +131,10 @@ class XingeApp
      */
     protected function callRestful($url, HashMap $params)
     {
-        $paramsBase = new ParamsBase($params);
-        $sign = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
+        $paramsBase     = new ParamsBase($params);
+        $sign           = $paramsBase->generateSign(RequestBase::METHOD_POST, $url, $this->m_secretKey);
         $params['sign'] = $sign;
-        $requestBase = new RequestBase();
+        $requestBase    = new RequestBase();
         try {
             $response = $requestBase->exec(
                 $url,
@@ -201,7 +201,7 @@ class XingeApp
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
-        $params->put("environment", $$environment);
+        $params->put("environment", $environment);
         if ($message->getLoopInterval() > 0 && $message->getLoopTimes() > 0) {
             $params->put("loop_interval", $message->getLoopInterval());
             $params->put("loop_times", $message->getLoopTimes());
@@ -218,7 +218,7 @@ class XingeApp
      * @param Message $message 待推送的消息
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushSingleAccount($deviceType, $account, Message $message)
+    public function pushSingleAccount($account, Message $message, $deviceType = 0)
     {
         if (!$this->ValidateMessageType()) {
             return ['ret_code' => -1, 'err_msg' => 'message type error!'];
@@ -231,7 +231,7 @@ class XingeApp
         $params->put("expire_time", $message->getExpireTime());
         $params->put("send_time", $message->getSendTime());
         $params->put("multi_pkg", $message->getMultiPkg());
-        $params->put("device_type", $$deviceType);
+        $params->put("device_type", $deviceType);
         $params->put("account", $account);
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
@@ -245,11 +245,11 @@ class XingeApp
      *
      * @param int $deviceType 设备类型，请填0
      * @param string $account 目标账号
-     * @param MessageIOS message 待推送的消息
-     * @param int environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
+     * @param MessageIOS $message 待推送的消息
+     * @param int $environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushSingleAccountIos(int $deviceType, string $account, MessageIOS $message, $environment)
+    public function pushSingleAccountIos(string $account, MessageIOS $message, $environment, int $deviceType = 0)
     {
         if (!$this->ValidateMessageTypeIos($environment)) {
             return ['ret_code' => -1, 'err_msg' => 'message type or environment error!'];
@@ -275,11 +275,11 @@ class XingeApp
      * 如果目标账号数超过10000，建议改用{@link #pushAccountListMultiple}接口
      *
      * @param int $deviceType 设备类型，请填0
-     * @param array accoun$accountListtList 目标账号列表
+     * @param array $accoun $accountListtList 目标账号列表
      * @param Message $message 待推送的消息
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushAccountList(int $deviceType, $accountList, Message $message)
+    public function pushAccountList(array $accountList, Message $message, int $deviceType = 0)
     {
         if (!$this->ValidateMessageType()) {
             return ['ret_code' => -1, 'err_msg' => 'message type error!'];
@@ -292,7 +292,7 @@ class XingeApp
         $params->put("expire_time", $message->getExpireTime());
         $params->put("multi_pkg", $message->getMultiPkg());
         $params->put("device_type", $deviceType);
-        $params->put("account_list", $accountList);
+        $params->put("account_list", json_encode($accountList));
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
@@ -304,13 +304,13 @@ class XingeApp
      * 推送给多个账号，限iOS设备使用 <br/>
      * 如果目标账号数超过10000，建议改用{@link #pushAccountListMultiple}接口
      *
-     * @param deviceType 设备类型，请填0
-     * @param accountList 目标账号列表
-     * @param message 待推送的消息
-     * @param environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
+     * @param int $deviceType 设备类型，请填0
+     * @param array $accountList 目标账号列表
+     * @param MessageIOS $message 待推送的消息
+     * @param int $environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushAccountListIos(int $deviceType, $accountList, MessageIOS $message, int $environment)
+    public function pushAccountListIos(array $accountList, MessageIOS $message, int $environment, int $deviceType = 0)
     {
         if (!$this->ValidateMessageTypeIos($environment)) {
             return ['ret_code' => -1, 'err_msg' => 'message type or environment error!'];
@@ -322,7 +322,7 @@ class XingeApp
         $params->put("access_id", $this->m_accessId);
         $params->put("expire_time", $message->getExpireTime());
         $params->put("device_type", $deviceType);
-        $params->put("account_list", $accountList);
+        $params->put("account_list", json_encode($accountList));
         $params->put("message_type", $message->getType());
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
@@ -370,7 +370,7 @@ class XingeApp
      * @param int $environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushAllDeviceIos(int $deviceType, MessageIOS $message, int $environment)
+    public function pushAllDeviceIos(MessageIOS $message, int $environment, int $deviceType = 0)
     {
         if (!$this->ValidateMessageTypeIos($environment)) {
             return ['ret_code' => -1, 'err_msg' => 'message type or environment error!'];
@@ -404,7 +404,7 @@ class XingeApp
      * @param message 待推送的消息
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushTags(int $deviceType, $tagList, $tagOp, Message $message)
+    public function pushTags($tagList, $tagOp, Message $message, int $deviceType = 0)
     {
         if (!$this->ValidateMessageType()) {
             return ['ret_code' => -1, 'err_msg' => 'message type error!'];
@@ -441,7 +441,7 @@ class XingeApp
      * @param int $environment 推送的目标环境 必须是其中一种： {@link #IOSENV_PROD}生产环境 {@link #IOSENV_DEV}开发环境
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushTagsIos(int $deviceType, $tagList, $tagOp, MessageIOS $message, int $environment)
+    public function pushTagsIos(array $tagList, $tagOp, MessageIOS $message, int $environment, int $deviceType = 0)
     {
         if (!$this->ValidateMessageTypeIos($environment)) {
             return ['ret_code' => -1, 'err_msg' => 'message type or environment error!'];
@@ -455,7 +455,7 @@ class XingeApp
         $params->put("send_time", $message->getSendTime());
         $params->put("device_type", $deviceType);
         $params->put("message_type", $message->getType());
-        $params->put("tags_list", $tagList);
+        $params->put("tags_list", json_encode($tagList));
         $params->put("tags_op", $tagOp);
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
@@ -529,7 +529,7 @@ class XingeApp
      * @param array $accountList 账号列表，数量最多为1000个
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushAccountListMultiple($pushId, $accountList)
+    public function pushAccountListMultiple($pushId, array $accountList)
     {
         if ($$pushId <= 0) {
             return ['ret_code' => -1, 'err_msg' => 'pushId invalid!'];
@@ -537,7 +537,7 @@ class XingeApp
         $params = new HashMap;
         $params->put("access_id", $this->m_accessId);
         $params->put("push_id", $pushId);
-        $params->put("account_list", $accountList);
+        $params->put("account_list", json_encode($accountList));
         $params->put("timestamp", time());
         return $this->callRestful(self::RESTAPI_PUSHACCOUNTLISTMULTIPLE, $params);
     }
@@ -550,7 +550,7 @@ class XingeApp
      * @param array $deviceList 设备列表，数量最多为1000个
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushDeviceListMultipleIos($pushId, $deviceList)
+    public function pushDeviceListMultipleIos($pushId, array $deviceList)
     {
         if ($pushId <= 0) {
             return ['ret_code' => -1, 'err_msg' => 'pushId invalid!'];
@@ -558,7 +558,7 @@ class XingeApp
         $params = new HashMap;
         $params->put("access_id", $this->m_accessId);
         $params->put("push_id", $pushId);
-        $params->put("device_list", $deviceList);
+        $params->put("device_list", json_encode($deviceList));
         $params->put("timestamp", time());
         return $this->callRestful(self::RESTAPI_PUSHDEVICELISTMULTIPLE, $params);
     }
@@ -581,7 +581,7 @@ class XingeApp
                 'push_id' => $item
             ];
         }
-        $params->put("push_ids", $jArray);
+        $params->put("push_ids", json_encode($jArray));
         return $this->callRestful(self::RESTAPI_QUERYPUSHSTATUS, $params);
     }
 //
@@ -679,12 +679,12 @@ class XingeApp
                 return ['ret_code' => -1, 'err_msg' => sprintf("invalid token %s", $pair->token)];
             }
         }
-        $params = $this->InitParams();
+        $params         = $this->InitParams();
         $tag_token_list = array();
         foreach ($tagTokenPairs as $pair) {
             array_push($tag_token_list, array($pair->tag, $pair->token));
         }
-        $params->put('tag_token_list', $tag_token_list);
+        $params->put('tag_token_list', json_encode($tag_token_list));
         return $this->callRestful(self::RESTAPI_BATCHSETTAG, $params);
     }
 //
@@ -707,15 +707,14 @@ class XingeApp
                 return $ret;
             }
         }
-        $params = $this->InitParams();
+        $params         = $this->InitParams();
         $tag_token_list = array();
         foreach ($tagTokenPairs as $pair) {
             array_push($tag_token_list, array($pair->tag, $pair->token));
         }
-        $params->put('tag_token_list', $tag_token_list);
+        $params->put('tag_token_list', json_encode($tag_token_list));
         return $this->callRestful(self::RESTAPI_BATCHDELTAG, $params);
     }
-//
 
     /**
      * 查询token相关的信息，包括最近一次活跃时间，离线消息数等
