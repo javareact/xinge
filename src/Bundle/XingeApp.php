@@ -337,7 +337,7 @@ class XingeApp
      * @param Message $message 待推送的消息
      * @return array 服务器执行结果，JSON形式
      */
-    public function pushAllDevice(int $deviceType, Message $message)
+    public function pushAllDevice(Message $message, int $deviceType = 0)
     {
         if (!$this->ValidateMessageType()) {
             return ['ret_code' => -1, 'err_msg' => 'message type error!'];
@@ -360,7 +360,6 @@ class XingeApp
         }
         return $this->callRestful(self::RESTAPI_PUSHALLDEVICE, $params);
     }
-//
 
     /**
      * 推送给全量设备，限iOS系统使用

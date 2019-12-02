@@ -32,8 +32,8 @@ class XingePushTest extends TestCase
         $push = new XingeApp($this->accessId, $this->secretKey);
         $mess = new Message();
         $mess->setType(Message::TYPE_NOTIFICATION);
-        $mess->setTitle("title");
-        $mess->setContent("中午");
+        $mess->setTitle("测试1测试2");
+        $mess->setContent("中午发送一个");
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
@@ -49,7 +49,7 @@ class XingePushTest extends TestCase
         $mess->setCustom($custom);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushSingleDevice('token', $mess);
+        $ret = $push->PushSingleDevice('32681032197fa798aa0b8777a644772023f74d6e', $mess);
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;
@@ -188,8 +188,8 @@ class XingePushTest extends TestCase
         $push = new XingeApp($this->accessId, $this->secretKey);
         $mess = new Message();
         $mess->setType(Message::TYPE_NOTIFICATION);
-        $mess->setTitle("title");
-        $mess->setContent("中午");
+        $mess->setTitle("测试全部推送标题");
+        $mess->setContent("测试全部推送正文");
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
@@ -203,7 +203,7 @@ class XingePushTest extends TestCase
         $mess->setAction($action);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushAllDevices($mess);//fixme
+        $ret = $push->pushAllDevice($mess);
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;
