@@ -32,6 +32,8 @@ class XingeApp
     const RESTAPI_QUERYTOKENSOFACCOUNT     = "http://openapi.xg.qq.com/v2/application/get_app_account_tokens";
     const RESTAPI_DELETETOKENOFACCOUNT     = "http://openapi.xg.qq.com/v2/application/del_app_account_tokens";
     const RESTAPI_DELETEALLTOKENSOFACCOUNT = "http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens";
+    /** @var string v3接口 */
+    const RESTAPI_BATCHOPERATEACCOUNT = "https://openapi.xg.qq.com/v3/device/account/batchoperate";
 
     const DEVICE_ALL      = 0;
     const DEVICE_BROWSER  = 1;
@@ -40,25 +42,30 @@ class XingeApp
     const DEVICE_IOS      = 4;
     const DEVICE_WINPHONE = 5;
 
+    const ANDROID_STR = 'android';
+    const IOS_STR     = 'ios';
+
     const IOSENV_PROD = 1;
     const IOSENV_DEV  = 2;
 
     const IOS_MIN_ID = 2200000000;
 
+    private $m_appId;
     private $m_accessId;
     private $m_secretKey;
 
     /**
      * XingeApp constructor.
-     * @param $appId
-     * @param $secretKey
+     * @param string $appId
+     * @param string $secretKey
      * @param string $accessId
      */
-    public function __construct($accessId, $secretKey)
+    public function __construct($accessId, $secretKey, $appId = '')
     {
         if (empty($accessId) || empty($secretKey)) {
             throw new InvalidArgumentException();
         }
+        $this->m_appId     = $appId;
         $this->m_accessId  = $accessId;
         $this->m_secretKey = $secretKey;
     }
@@ -71,6 +78,17 @@ class XingeApp
     }
 
     /**
+     * 判断是否为合法JSON字符串
+     * @param $string
+     * @return bool
+     */
+    public function isJson($string)
+    {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    /**
      * json转换为数组
      * @param $json
      * @return mixed
@@ -78,6 +96,9 @@ class XingeApp
     protected function json2Array($json)
     {
         $json = stripslashes($json);
+        if (!$this->isJson($json)) {
+            return $json;
+        }
         return json_decode($json, true);
     }
 
@@ -147,6 +168,34 @@ class XingeApp
         $ret = $this->json2Array($response);
         return $ret;
     }
+
+    /**
+     * 请求接口V3
+     * @param $url
+     * @param $params
+     * @return mixed
+     */
+    public function callRestfulV3($url, HashMap $params)
+    {
+        $requestBase     = new RequestBase();
+        $extra_curl_conf = array(
+            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+            CURLOPT_USERPWD  => $this->m_appId . ':' . $this->m_secretKey,
+        );
+        try {
+            $response = $requestBase->execV3(
+                $url,
+                $params,
+                RequestBase::METHOD_POST,
+                $extra_curl_conf
+            );
+        } catch (Exception $e) {
+            return null;
+        }
+        $ret = $this->json2Array($response);
+        return $ret;
+    }
+
 
     //简易API接口
     //详细API接口
@@ -777,6 +826,32 @@ class XingeApp
         $params->put("account", $account);
         $params->put("timestamp", time());
         return $this->callRestful(self::RESTAPI_DELETEALLTOKENSOFACCOUNT, $params);
+    }
+
+    /**
+     * 根据token设置账号
+     * @param string $account
+     * @param string $deviceToken
+     * @param string $platform
+     * @return string
+     */
+    public function setAccountByToken(string $account, string $deviceToken, $platform = self::ANDROID_STR)
+    {
+        $params = new HashMap;
+        $params->put("operator_type", 2);
+        $params->put("platform", $platform);
+        $params->put("token_accounts", [
+            [
+                'token'        => $deviceToken,
+                'account_list' => [
+                    [
+                        'account'      => $account,
+                        'account_type' => 0
+                    ]
+                ]
+            ]
+        ]);
+        return $this->callRestfulV3(self::RESTAPI_BATCHOPERATEACCOUNT, $params);
     }
 
 }

@@ -13,8 +13,9 @@ use Javareact\Xinge\Bundle\XingeApp;
 
 class XingePushTest extends TestCase
 {
-    public $accessId  = 'accessId';
-    public $secretKey = 'secretKey';
+    public $accessId  = '$accessId';
+    public $secretKey = '$secretKey';
+    public $appId     = '$appId';
 
 
     public function __construct($name = null, array $data = [], $dataName = '')
@@ -393,6 +394,20 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
         $ret  = $push->DeleteAllTokensOfAccount("nickName");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
+        $this->assertNotEmpty($ret);
+    }
+
+    /**
+     * 根据token设置账号
+     * @return array|mixed
+     */
+    public function testSetAccountByToken()
+    {
+        $push = new XingeApp($this->accessId, $this->secretKey, $this->appId);
+        $ret  = $push->setAccountByToken("13800138001", '32681032197fa798aa0b8777a644772023f74d6e');
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;

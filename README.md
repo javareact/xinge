@@ -48,3 +48,4 @@ This package makes the following changes against the official SDK
 - queryTokensOfAccount 查询account绑定的token
 - deleteTokenOfAccount 删除account绑定的token
 - deleteAllTokensOfAccount 删除account绑定的所有token
+- setAccountByToken 根据token设置account
