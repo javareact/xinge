@@ -833,7 +833,7 @@ class XingeApp
      * @param string $account
      * @param string $deviceToken
      * @param string $platform
-     * @return string
+     * @return mixed
      */
     public function setAccountByToken(string $account, string $deviceToken, $platform = self::ANDROID_STR)
     {
