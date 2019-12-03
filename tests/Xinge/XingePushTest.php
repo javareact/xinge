@@ -212,6 +212,34 @@ class XingePushTest extends TestCase
     }
 
     /**
+     * 下发所有设备(IOS)
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
+     */
+    public function testDemoPushAllDevicesIOS()
+    {
+        $push = new XingeApp('88311062e1e79', '66ddd9c5913269c2d4c9659328db29b7');
+        $mess = new MessageIOS();
+        $mess->setType(MessageIOS::TYPE_APNS_NOTIFICATION);
+        $mess->setTitle('title');
+        $mess->setContent('content');
+        $mess->setExpireTime(86400);
+        $mess->setSendTime(date('Y-m-d H:i:s'));
+        //$mess->setAlert(array('key1'=>'value1'));
+        $mess->setBadge(1);
+        $mess->setSound("beep.wav");
+        $custom = array('key1' => 'value1', 'key2' => 'value2');
+        $mess->setCustom($custom);
+        $acceptTime1 = new TimeInterval(0, 0, 23, 59);
+        $mess->addAcceptTime($acceptTime1);
+        $ret = $push->pushAllDeviceIos($mess, XingeApp::IOSENV_DEV);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
+        $this->assertNotEmpty($ret);
+    }
+
+    /**
      * 下发标签选中设备
      * @return array|mixed
      * @throws \Javareact\Xinge\Exceptions\Exception
