@@ -13,8 +13,9 @@ use Javareact\Xinge\Bundle\XingeApp;
 
 class XingePushTest extends TestCase
 {
-    public $accessId  = 'accessId';
-    public $secretKey = 'secretKey';
+    public $accessId  = '$accessId';
+    public $secretKey = '$secretKey';
+    public $appId     = '$appId';
 
 
     public function __construct($name = null, array $data = [], $dataName = '')
@@ -32,8 +33,8 @@ class XingePushTest extends TestCase
         $push = new XingeApp($this->accessId, $this->secretKey);
         $mess = new Message();
         $mess->setType(Message::TYPE_NOTIFICATION);
-        $mess->setTitle("title");
-        $mess->setContent("中午");
+        $mess->setTitle("测试1测试2");
+        $mess->setContent("中午发送一个");
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
@@ -49,7 +50,7 @@ class XingePushTest extends TestCase
         $mess->setCustom($custom);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushSingleDevice('token', $mess);
+        $ret = $push->PushSingleDevice('32681032197fa798aa0b8777a644772023f74d6e', $mess);
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;
@@ -188,8 +189,8 @@ class XingePushTest extends TestCase
         $push = new XingeApp($this->accessId, $this->secretKey);
         $mess = new Message();
         $mess->setType(Message::TYPE_NOTIFICATION);
-        $mess->setTitle("title");
-        $mess->setContent("中午");
+        $mess->setTitle("测试全部推送标题");
+        $mess->setContent("测试全部推送正文");
         $mess->setExpireTime(86400);
         $mess->setSendTime(date('Y-m-d H:i:s'));
         #含义：样式编号0，响铃，震动，不可从通知栏清除，不影响先前通知
@@ -203,7 +204,35 @@ class XingePushTest extends TestCase
         $mess->setAction($action);
         $acceptTime1 = new TimeInterval(0, 0, 23, 59);
         $mess->addAcceptTime($acceptTime1);
-        $ret = $push->PushAllDevices($mess);//fixme
+        $ret = $push->pushAllDevice($mess);
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
+        $this->assertNotEmpty($ret);
+    }
+
+    /**
+     * 下发所有设备(IOS)
+     * @return array|mixed
+     * @throws \Javareact\Xinge\Exceptions\Exception
+     */
+    public function testDemoPushAllDevicesIOS()
+    {
+        $push = new XingeApp('88311062e1e79', '66ddd9c5913269c2d4c9659328db29b7');
+        $mess = new MessageIOS();
+        $mess->setType(MessageIOS::TYPE_APNS_NOTIFICATION);
+        $mess->setTitle('title');
+        $mess->setContent('content');
+        $mess->setExpireTime(86400);
+        $mess->setSendTime(date('Y-m-d H:i:s'));
+        //$mess->setAlert(array('key1'=>'value1'));
+        $mess->setBadge(1);
+        $mess->setSound("beep.wav");
+        $custom = array('key1' => 'value1', 'key2' => 'value2');
+        $mess->setCustom($custom);
+        $acceptTime1 = new TimeInterval(0, 0, 23, 59);
+        $mess->addAcceptTime($acceptTime1);
+        $ret = $push->pushAllDeviceIos($mess, XingeApp::IOSENV_DEV);
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;
@@ -393,6 +422,20 @@ class XingePushTest extends TestCase
     {
         $push = new XingeApp($this->accessId, $this->secretKey);
         $ret  = $push->DeleteAllTokensOfAccount("nickName");
+        echo PHP_EOL;
+        var_export($ret);
+        echo PHP_EOL;
+        $this->assertNotEmpty($ret);
+    }
+
+    /**
+     * 根据token设置账号
+     * @return array|mixed
+     */
+    public function testSetAccountByToken()
+    {
+        $push = new XingeApp($this->accessId, $this->secretKey, $this->appId);
+        $ret  = $push->setAccountByToken("13800138001", '32681032197fa798aa0b8777a644772023f74d6e');
         echo PHP_EOL;
         var_export($ret);
         echo PHP_EOL;
