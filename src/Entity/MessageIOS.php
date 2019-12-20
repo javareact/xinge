@@ -148,6 +148,10 @@ class MessageIOS
         $this->m_loopTimes = $loopTimes;
     }
 
+    /**
+     * 组装发送参数
+     * @return string
+     */
     public function toJson()
     {
         if (!empty($this->m_raw)) {
@@ -155,14 +159,15 @@ class MessageIOS
         }
 
         $ret                = array();
-        $ret['ios']         = $this->m_custom;
+        $ret['custom']      = $this->m_custom;
         $ret['accept_time'] = $this->acceptTimeToJson();
 
         $aps = array();
         if ($this->m_type == self::TYPE_APNS_NOTIFICATION) {
-            $ret['title']   = $this->m_title;
-            $ret['content'] = $this->m_content;
-            $aps['alert']   = $this->m_alert;
+            $aps['alert'] = [
+                'title'   => $this->m_title,
+                'content' => $this->m_content,
+            ];
             if (isset($this->m_badge)) {
                 $aps['badge'] = $this->m_badge;
             }
@@ -178,7 +183,7 @@ class MessageIOS
         } else if ($this->m_type == self::TYPE_REMOTE_NOTIFICATION) {
             $aps['content-available'] = 1;
         }
-        $ret['ios']['aps'] = $aps;
+        $ret['aps'] = $aps;
         return json_encode($ret);
     }
 

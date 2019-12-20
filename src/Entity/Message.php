@@ -145,6 +145,7 @@ class Message
     }
 
     /**
+     * 组装发送参数
      * @return string
      */
     public function toJson()
@@ -186,7 +187,7 @@ class Message
             $ret['content']     = $this->m_content;
             $ret['accept_time'] = $this->acceptTimeToJson();
         }
-        $ret['android']['custom_content'] = $this->m_custom;
+        $ret['custom_content'] = $this->m_custom;
         return json_encode($ret);
     }
 
