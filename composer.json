@@ -3,6 +3,13 @@
   "type": "library",
   "description": "腾讯移动信鸽推送SDK(PHP版本), Xinge API PHP Client",
   "homepage": "https://github.com/javareact/xinge",
+  "keywords": [
+    "信鸽推送",
+    "腾讯移动",
+    "Xinge",
+    "SDK",
+    "PHP"
+  ],
   "license": "MIT",
   "require": {
     "php": ">=7.2",
