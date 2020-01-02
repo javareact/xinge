@@ -98,7 +98,15 @@ class MessageIOS
         $this->m_alert = $alert;
     }
 
-    public function setBadge($badge)
+    /**
+     * 用户设置角标数字
+     * @param int $badge
+     * 仅限iOS 平台使用,放在aps字段内<br>
+     * 1) -1:角标数字不变<br>
+     * 2) -2:角标数字自动加1<br>
+     * 3) >=0:设置「自定义」角标数字<br>
+     */
+    public function setBadge(int $badge)
     {
         $this->m_badge = $badge;
     }
@@ -169,7 +177,7 @@ class MessageIOS
                 'content' => $this->m_content,
             ];
             if (isset($this->m_badge)) {
-                $aps['badge'] = $this->m_badge;
+                $aps['badge_type'] = $this->m_badge;
             }
 
             if (isset($this->m_sound)) {
