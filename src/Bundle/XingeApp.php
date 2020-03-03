@@ -467,7 +467,7 @@ class XingeApp
         $params->put("multi_pkg", $message->getMultiPkg());
         $params->put("device_type", $deviceType);
         $params->put("message_type", $message->getType());
-        $params->put("tags_list", $tagList);
+        $params->put("tags_list", json_encode($tagList));
         $params->put("tags_op", $tagOp);
         $params->put("message", $message->toJson());
         $params->put("timestamp", time());
