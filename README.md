@@ -2,6 +2,8 @@
 
 A simple Composer port for the [Tencent Xinge Push](http://xg.qq.com) PHP SDK.
 
+> 信鸽已下线,请移步腾讯移动推送TPNS
+- [腾讯移动推送TPNS](https://cloud.tencent.com/product/tpns)
 - [Official Documentation](http://developer.qq.com/wiki/xg/)
 - [Usage Samples](docs)
 
@@ -10,10 +12,6 @@ A simple Composer port for the [Tencent Xinge Push](http://xg.qq.com) PHP SDK.
 ```sh
 composer require javareact/xinge
 ```
-
-## Modifications
-
-This package makes the following changes against the official SDK
 
 ## 概述
 [信鸽](http://xg.qq.com) 是腾讯云提供的一款支持**百亿级**消息的移动App推送平台，开发者可以调用Java SDK访问信鸽推送服务。
